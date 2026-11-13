@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "operation": "report_site",
+  "public_safe": true,
+  "report_id": "nrs_a5b57c5ad7bf785792fa0a5412a4923b740eccd9c8bbd65d9b45add96e2dcfd9",
+  "files": [
+    {
+      "path": "data.json",
+      "sha256": "76a8fea219ea295a3a441b81ad6f9733e7cfa56ad3398c19ce1f93ba9e7ee3bd"
+    },
+    {
+      "path": "evidence.json",
+      "sha256": "7791ba56a318923863fdd32674fad180e101d21ed5b8c854efe2d0778c48903a"
+    },
+    {
+      "path": "experiment.json",
+      "sha256": "0e65139efe6a242bfa451d51977bcff229577215f59e0feb3338b8502baf33d3"
+    },
+    {
+      "path": "index.html",
+      "sha256": "a8fa8248258c8093eedca5bc67529302a55f6b138370484ec3415bf2b55ade81"
+    },
+    {
+      "path": "issues.html",
+      "sha256": "5efd78b85687b3b0fdd6b0f60b219098c1dc736b39371509adb1a7cde98c094a"
+    },
+    {
+      "path": "metrics.csv",
+      "sha256": "0d7de65078b35527f1e34e3e47c0e22fe1429c28944303200cfc215804319266"
+    },
+    {
+      "path": "run-details.html",
+      "sha256": "143a93999a5868e54a94a33c496f93a6b5abc1890b4c871b471228c0bbf3e0bd"
+    }
+  ]
+}

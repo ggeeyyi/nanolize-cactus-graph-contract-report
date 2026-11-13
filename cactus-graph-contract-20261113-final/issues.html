@@ -1,0 +1,1065 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cactus graph-contract · 问题记录</title><style>body{margin:0;background:#f5f7f9;color:#18272d;font:16px/1.65 system-ui,sans-serif}main{max-width:1080px;margin:auto;padding:32px 24px 70px}h1{font-size:36px;line-height:1.2}h2{margin-top:36px}a{color:#07646a}header{border-bottom:1px solid #cdd9da;padding-bottom:22px}.eyebrow{font-size:13px;letter-spacing:.12em;color:#596d72}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:24px 0}.card{background:white;border:1px solid #d7e0e2;border-radius:12px;padding:18px}.card strong{display:block;font-size:26px}.card span{color:#52666b}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;background:white}th,td{text-align:left;padding:10px 14px;border-bottom:1px solid #dce4e6;vertical-align:top}th{background:#eaf1f1}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.7 ui-monospace,monospace}details{background:white;border:1px solid #d7e0e2;border-radius:10px;margin:12px 0;padding:16px}summary{cursor:pointer;font-weight:650}.note{padding:16px;border-left:4px solid #bc8935;background:#fff6e4}code{overflow-wrap:anywhere}@media(max-width:500px){main{padding:24px 16px}h1{font-size:28px}.card strong{font-size:23px}th,td{padding:8px}}</style></head><body><main><header><p class="eyebrow">CACTUS · GRAPH-CONTRACT · ISSUES</p><h1>运行问题与处理摘要</h1><p><a href="index.html">功能图报告</a> · <a href="run-details.html">实验数字</a></p><p>每项保留步骤、作业 ID、原因、修改和结果。完整错误原文保存在本地运行目录的 issues.md；私有检查输出不发布。机器绝对路径统一替换为 &lt;run&gt;。</p></header><details><summary>1. 进度页 CLI 中文参数不兼容</summary><pre>- 步骤：启动进度页；作业 ID：尚未提交。
+- 原因：该分支 CLI 未暴露底层函数已支持的 language 参数；调用方错误使用了参数名。
+- 绕过：notes/prepare_run.py 直接调用同一已安装分支的 start_run_dashboard(..., language=&quot;zh-CN&quot;)。未修改 nanolize。
+- 结果：进度页成功启动，见 notes/dashboard.json。
+- 验收条件：未改变。</pre></details><details><summary>2. Graphify 部分 Metal 内核解析不完整</summary><pre>- 步骤：静态功能图提取；作业 ID：尚未提交。
+- 原因：Graphify 的解析器不能完整识别这些 Metal 源码；另外静态样式和安装文件未识别为代码。
+- 绕过：完整保留图文件，并将全部 kernels 目录显式映射为 mlx-kernels；静态资源和安装文件分别映射到 playground/distribution。未修改项目。
+- 结果：生成 1683 节点、4110 边、90 社区；当时 nanolize 识别的 67 个生产源码文件全部有归属；问题 4 随后补入 Metal，最终清单覆盖 74 个生产源码文件。Graphify 的 3 项解析警告仍保留。
+- 验收条件：未改变，MLX/Metal 实际运行仍由可用平台测试决定。</pre></details><details><summary>3. 检查定义源码路径探测错误</summary><pre>- 步骤：准备检查清单；作业 ID：尚未提交。
+- 原因：调用方假设了不存在的源码文件，并在 nanolize 目录查找了目标项目文件。
+- 绕过：使用 rg --files 查找真实实现；目标源码读取切回 cactus 目录。
+- 结果：已读到目标实现并生成旧格式清单。
+- 后续同类探测：恢复排查中 rg 查询了不存在的 job_tools/state.py、execution_reports.py 和 review_service.py，原文为 `No such file or directory (os error 2)`；改为搜索实际 job_tools 目录，未影响作业。
+- 验收条件：未改变。
+
+补充问题 3（08:41 UTC，只读复核）：查询清单时错误假定 cli 节点有 features 字段，原文 `KeyError: features`。改为读取实际键与 get；未修改清单或作业。</pre></details><details><summary>4. nanolize 未将 Metal 内核识别为生产源码</summary><pre>- 步骤：contract-propose；作业 ID：尚未提交。
+- 原因：repository.SOURCE_SUFFIXES 未包含 .metal，功能图不能给这些原生内核分配归属。
+- 绕过：在独立本地分支 workaround/cactus-graph-contract-20261113 为 SOURCE_SUFFIXES 增加 .metal，新增生产源码映射和 token 度量回归测试；同时在提交前将配置文件从 paths 移至已有 evidence，仅用源码路径作功能归属，并把输出比较字段更正为合法的 output。
+- 结果：16 项体积/边界回归测试通过，修复提交 b8d6fac，转换重试成功。
+- 验收条件：未放宽；Metal 内核被计入源码和体积。
+
+问题 4 后续：16 项体积/边界回归测试全部通过；修复单独提交 b8d6fac；contract-propose 成功，输出此前不存在；未使用 --keep-checks。</pre></details><details><summary>5. 人工补充的接口与转换结果重复</summary><pre>- 步骤：plan 全功能规划；作业 ID：尚未提交。
+- 原因：手工补充 Needle 别名时，该条已由转换器生成。
+- 绕过：在 notes/manifest-final.json 对各节点 interface 按原序去除完全相同的字符串。
+- 结果：规划最终成功，scope-audit 与 doctor 均通过；没有删除任何不同的接口约束。
+- 验收条件：未改变。</pre></details><details><summary>6. 手工接口说明超过单条长度限制</summary><pre>- 步骤：plan 全功能规划；作业 ID：尚未提交。
+- 原因：CLI 全部选项放在一句说明里超过 graph-contract 单条 2000 字符限制。
+- 绕过：notes/manifest-final.json 将长的 CLI 选项列表逐项写成一句话，保留每个名字和默认值。
+- 结果：规划最终成功，scope-audit 与 doctor 均通过。
+- 验收条件：未改变，未截断接口内容。</pre></details><details><summary>7. 接口描述中的缩写被识别为绝对路径</summary><pre>- 步骤：plan；作业 ID：尚未提交。
+- 原因：LoRA tensor 键写成 lora/&lt;name&gt;/A and /B，其中 /B 被源码隔离检查视为绝对位置。
+- 绕过：notes/manifest-final.json 完整写成 lora/&lt;name&gt;/A and lora/&lt;name&gt;/B。
+- 结果：规划最终成功，scope-audit 与 doctor 均通过。
+- 验收条件：未改变。
+
+问题 5–7 后续：规划、scope-audit 和 doctor 全部成功；全范围 27 节点、74 生产源码文件、141485 源码与配置 tokens，未排除节点。
+
+准备阶段原版完整测试：281 passed, 14 skipped in 222.47s；跳过原因保存在 notes/original-pytest.xml，未改变原版测试。
+
+补充问题 3：探测时还查询了不存在的 inventory.py/languages.py/api.py/test_inventory.py/test_inspect.py/test_repository.py/installation.py/test_installation.py，均为文件定位错误；后续以 rg 实际文件搜索定位，未影响作业输入或测试。</pre></details><details><summary>8. 状态查询 CLI 缺少 review_id</summary><pre>- 步骤：观察作业；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：该 CLI 需要 review_id、job_id 两个位置参数，首次只传了 job_id。
+- 绕过：按帮助传入 review_id=65616ab086c844c49c3026288f9900c0 和 job_id，state-root 指向 state。
+- 结果：状态成功保存 notes/latest-job-status.json，后台作业始终运行。
+- 验收条件：未改变。</pre></details><details><summary>9. 沙箱状态查询把宿主工作进程误判为退出</summary><pre>- 步骤：冻结测试事实期间执行 job-status；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：沙箱与宿主 PID 可见性不同；沙箱读 /proc/3226876/stat 得到 FileNotFoundError，kill(pid,0) 得到 ProcessLookupError，但宿主 ps 和 nanolize.process_matches 核实同一 PID/start/uid 的 worker 一直存活，事实文件继续写入。job-status 会把观察不到的进程写成失败状态。
+- 绕过：先保存 notes/monitor-false-failure.json；notes/recover_monitor_status.py 在宿主核实精确进程身份、无结果/无取消记录后，调用 _event(..., reopen=True) 仅恢复 public.json 的运行状态并追加诊断事件；后续所有具有进程协调副作用的状态/恢复命令均在宿主执行，沙箱只读 JSON。没有修改 config.json 或任何基线/测试。
+- 结果：原 worker 继续冻结工作，无需重启作业。
+- 验收条件：未改变。</pre></details><details><summary>10. 原版逐文件基线的 MLX 检查有缺依赖和超时</summary><pre>- 步骤：capture_baseline；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：完整 pytest 预检在 Linux 下会 collect_ignore Apple 专用目录，而清单的逐文件检查显式运行它们；mlx_lm 是原版为 macOS/Apple 条件声明的依赖。两个 CPU 数值检查单次耗时超过清单未设置时限时采用的默认 30 秒。
+- 继续方式：不删检查、不延长用户要求保持默认的上限、不改原版或冻结证据；按分支默认规则保留这些原版本身未通过的检查及其 not-criteria/未验证状态，继续独立设计可通过外部接口验证的测试。
+- 结果：基线成功保存，17 组检查中 12 passed、3 failed、2 timed_out；26 个叶节点均需要有效性补测，测试设计已开始。
+- 验收条件：无人工放宽；原版失败/超时检查不作行为判据是所用分支的默认规则，这 5 组不可报告为通过。</pre></details><details><summary>11. 测试设计提案未满足规则而被拒绝</summary><pre>- 步骤：design_leaf_tests 两轮设计、运行验证及独立审阅；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：包括引用不存在的 feature 标识、缺少断言或测试函数、函数失效后仍不失败、审阅发现测试结构耦合、事实不准确或断言不充分；按各项原文判断，不将这些提案计为通过。
+- 继续方式：作业默认第二轮把首轮拒绝原因交回独立设计者；运行验证及独立审阅筛掉不合格提案，未人工修改测试或放宽规则。
+- 结果：接受 20 份测试，覆盖 17 个叶节点；拒绝 30 份提案；运行器失败 0 次；未补到有效测试的节点为 artifacts, cli, distribution, environments, grounding, mlx-inference, speech-ui, tokenization, tools。冻结后共 37 组：32 通过、3 失败、2 超时；未修改原版检查。
+- 验收条件：未改变；没有有效测试的节点保留为未验证。
+
+### 11.1 artifacts / 1
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.2 checkpoints / 1
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.3 cli / 1
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.4 distribution / 1
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.5 environments / 1
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.6 export / 1
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.7 mlx-inference / 1
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.8 mlx-kernels / 1
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.9 mlx-models / 1
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.10 mlx-models / 1
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.11 mlx-models / 1
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.12 mlx-vision / 1
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.13 model-inference / 1
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.14 model-inference / 1
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.15 native-runtime / 1
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.16 speech-training / 1
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.17 speech-ui / 1
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.18 text-agents / 1
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.19 tools / 1
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.20 grounding / 1
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.21 artifacts / 2
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.22 grounding / 2
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.23 cli / 2
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.24 distribution / 2
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.25 environments / 2
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.26 tokenization / review
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.27 training / review
+- 处理与结果：该节点后来有测试获接受。
+
+### 11.28 mlx-inference / review
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.29 speech-ui / review
+- 处理与结果：该节点仍无获接受的补充测试。
+
+### 11.30 tools / review
+- 处理与结果：该节点仍无获接受的补充测试。
+
+补充问题 3（作业 da80b5ab066e44eb863c88a180ce0713，观察阶段）：源码定位还错误探测了 check_validation*、job_tools/baseline.py，原文均为 No such file or directory (os error 2)；以及 usage.py/job_tools.py、graph*.js。已用 rg --files 确认真实文件 leaf_test_validity.py、job_tools/freeze.py 和 assets 内文件；只读定位问题，未改变任何验收标准或作业输入。
+
+问题 11 后续：06:46 UTC 完整基线冻结成功；37 组检查中 32 passed、3 failed、2 timed_out，17 个叶节点有有效测试，9 个仍未验证。随后进入第一轮独立重写。</pre></details><details><summary>12. 作者首次探测目录和 Python 命令失败</summary><pre>- 步骤：第一轮 run_agent 的初始环境读取；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：作者工作区初始无生产源码，隐藏的 contract 资源未被普通 rg 默认枚举；宿主没有 python 无版本别名。
+- 绕过：作者自行直接读取 .nanolize-rewrite 下的契约，并改用 python3；未修改 job config 或测试环境。
+- 结果：后续 python3 命令成功，作者继续创建实现。
+- 验收条件：未改变。</pre></details><details><summary>13. 作者实现过程中的非零命令与自检记录（含预期探测）</summary><pre>- 步骤：独立作者实现/修复；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：以下逐项保留开发中失败命令的原文；缺模块/名称的自检来自尚未完成的候选实现，其他原因按输出判断。
+- 处理：由独立作者按契约继续补齐和修正候选代码，观察者没有写候选实现、修改测试或关闭自检。
+- 结果：最终为 completed_with_gaps：32 组状态通过、0 回归，3 项安装检查通过；完整命令和输出保存在 notes/author-command-errors.json。下列开发期非零返回包含预期探测，不等于全部是未解决缺陷。
+- 验收条件：未改变。
+
+### 13.1 作者会话 1 / item_27 / selfcheck.py
+- exit_code：1；原始日志行：55。
+- 原因：实现过程中的接口/模块自检仍有缺项；完整诊断见下文。
+- 处理：独立作者继续补齐契约；随后写入或修改的文件：尚无新的文件修改记录。
+- 结果：后续 selfcheck 命令已返回 0；行为是否通过仍以正式验证为准。
+
+### 13.2 作者会话 1 / item_42 / selfcheck.py
+- exit_code：1；原始日志行：81。
+- 原因：实现过程中的接口/模块自检仍有缺项；完整诊断见下文。
+- 处理：独立作者继续补齐契约；随后写入或修改的文件：cactus/model/_quantization.py, cactus/model/checkpoints.py, cactus/model/quantize.py, cactus/model/quantize_mlx.py。
+- 结果：后续 selfcheck 命令已返回 0；行为是否通过仍以正式验证为准。
+
+### 13.3 作者会话 2 / item_5 / 作者命令
+- exit_code：127；原始日志行：96。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.4 作者会话 2 / item_24 / selfcheck.py
+- exit_code：1；原始日志行：131。
+- 原因：实现过程中的接口/模块自检仍有缺项；完整诊断见下文。
+- 处理：独立作者继续补齐契约；随后写入或修改的文件：cactus/model/_forward.py, cactus/model/_quantization.py, cactus/model/build.py, cactus/model/finetune.py。
+- 结果：后续 selfcheck 命令已返回 0；行为是否通过仍以正式验证为准。
+
+### 13.5 作者会话 2 / item_26 / selfcheck.py
+- exit_code：1；原始日志行：135。
+- 原因：实现过程中的接口/模块自检仍有缺项；完整诊断见下文。
+- 处理：独立作者继续补齐契约；随后写入或修改的文件：cactus/model/_quantization.py, cactus/model/build.py, cactus/model/export.py, cactus/model/finetune.py, cactus/playground/server.py。
+- 结果：后续 selfcheck 命令已返回 0；行为是否通过仍以正式验证为准。
+
+### 13.6 作者会话 3 / item_1 / 作者命令
+- exit_code：1；原始日志行：155。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.7 作者会话 3 / item_5 / 作者命令
+- exit_code：127；原始日志行：163。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.8 作者会话 4 / item_4 / 作者命令
+- exit_code：1；原始日志行：256。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.9 作者会话 4 / item_6 / 作者命令
+- exit_code：127；原始日志行：260。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.10 作者会话 4 / item_8 / 作者命令
+- exit_code：127；原始日志行：263。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.11 作者会话 5 / item_6 / 作者命令
+- exit_code：1；原始日志行：293。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.12 作者会话 5 / item_7 / 作者命令
+- exit_code：127；原始日志行：295。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.13 作者会话 5 / item_12 / 作者命令
+- exit_code：1；原始日志行：304。
+- 原因：读取路径在当前草稿中不存在；新格式允许内部文件结构变化。
+- 处理：作者继续查阅已存在的草稿、契约和获准参考文件；没有要求恢复原版内部布局。
+- 结果：该路径读取失败已保留，后续实现继续运行。
+
+### 13.14 作者会话 5 / item_14 / 作者命令
+- exit_code：1；原始日志行：308。
+- 原因：读取路径在当前草稿中不存在；新格式允许内部文件结构变化。
+- 处理：作者继续查阅已存在的草稿、契约和获准参考文件；没有要求恢复原版内部布局。
+- 结果：该路径读取失败已保留，后续实现继续运行。
+
+### 13.15 作者会话 5 / item_28 / 作者命令
+- exit_code：1；原始日志行：335。
+- 原因：作者解释器缺少数值依赖，pip 查询未得到可用发行版本；输出本身不能确认更底层的网络或镜像原因。
+- 处理：作者尝试过指定 PyPI 源；依赖未装入时继续静态修复，正式比较仍使用已准备好的测试环境。
+- 结果：这次安装失败；没有把无法运行的数值自测记为通过。
+
+### 13.16 作者会话 5 / item_30 / 作者命令
+- exit_code：1；原始日志行：340。
+- 原因：作者解释器缺少数值依赖，pip 查询未得到可用发行版本；输出本身不能确认更底层的网络或镜像原因。
+- 处理：作者尝试过指定 PyPI 源；依赖未装入时继续静态修复，正式比较仍使用已准备好的测试环境。
+- 结果：这次安装失败；没有把无法运行的数值自测记为通过。
+
+### 13.17 作者会话 5 / item_39 / 作者命令
+- exit_code：2；原始日志行：355。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.18 作者会话 6 / item_5 / 作者命令
+- exit_code：1；原始日志行：381。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.19 作者会话 6 / item_8 / 作者命令
+- exit_code：127；原始日志行：387。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.20 作者会话 7 / item_5 / 作者命令
+- exit_code：127；原始日志行：435。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.21 作者会话 8 / item_4 / 作者命令
+- exit_code：127；原始日志行：521。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.22 作者会话 8 / item_6 / 作者命令
+- exit_code：1；原始日志行：524。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.23 作者会话 8 / item_25 / 作者命令
+- exit_code：1；原始日志行：560。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.24 作者会话 9 / item_1 / 作者命令
+- exit_code：1；原始日志行：567。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.25 作者会话 9 / item_3 / 作者命令
+- exit_code：127；原始日志行：573。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.26 作者会话 9 / item_5 / 作者命令
+- exit_code：1；原始日志行：575。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.27 作者会话 9 / item_8 / 作者命令
+- exit_code：1；原始日志行：580。
+- 原因：读取路径在当前草稿中不存在；新格式允许内部文件结构变化。
+- 处理：作者继续查阅已存在的草稿、契约和获准参考文件；没有要求恢复原版内部布局。
+- 结果：该路径读取失败已保留，后续实现继续运行。
+
+### 13.28 作者会话 9 / item_23 / selfcheck.py
+- exit_code：1；原始日志行：610。
+- 原因：实现过程中的接口/模块自检仍有缺项；完整诊断见下文。
+- 处理：独立作者继续补齐契约；随后写入或修改的文件：尚无新的文件修改记录。
+- 结果：后续 selfcheck 命令已返回 0；行为是否通过仍以正式验证为准。
+
+### 13.29 作者会话 9 / item_36 / 作者命令
+- exit_code：1；原始日志行：633。
+- 原因：未提供必需的子命令，这是一条负面用法探测，不是实现回归。
+- 处理：不改代码或检查；保留用法输出和退出状态作为实际观察。
+- 结果：返回用法及 exit_code 1，符合该无子命令输入的预期。
+
+### 13.30 作者会话 9 / item_40 / 作者命令
+- exit_code：1；原始日志行：645。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.31 作者会话 9 / item_39 / 作者命令
+- exit_code：1；原始日志行：646。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.32 作者会话 9 / item_43 / 作者命令
+- exit_code：2；原始日志行：648。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.33 作者会话 10 / item_5 / 作者命令
+- exit_code：127；原始日志行：667。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.34 作者会话 10 / item_9 / 作者命令
+- exit_code：1；原始日志行：675。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.35 作者会话 11 / item_3 / 作者命令
+- exit_code：1；原始日志行：723。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.36 作者会话 11 / item_5 / 作者命令
+- exit_code：127；原始日志行：727。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.37 作者会话 11 / item_22 / 作者命令
+- exit_code：1；原始日志行：759。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.38 作者会话 12 / item_4 / 作者命令
+- exit_code：127；原始日志行：775。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.39 作者会话 13 / item_3 / 作者命令
+- exit_code：1；原始日志行：826。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.40 作者会话 13 / item_5 / 作者命令
+- exit_code：127；原始日志行：828。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.41 作者会话 14 / item_2 / 作者命令
+- exit_code：1；原始日志行：875。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.42 作者会话 14 / item_3 / 作者命令
+- exit_code：127；原始日志行：877。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.43 作者会话 15 / item_4 / 作者命令
+- exit_code：127；原始日志行：922。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.44 作者会话 15 / item_10 / 作者命令
+- exit_code：1；原始日志行：936。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.45 作者会话 16 / item_2 / 作者命令
+- exit_code：1；原始日志行：956。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.46 作者会话 16 / item_3 / 作者命令
+- exit_code：127；原始日志行：958。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.47 作者会话 17 / item_5 / 作者命令
+- exit_code：127；原始日志行：1011。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.48 作者会话 17 / item_4 / 作者命令
+- exit_code：127；原始日志行：1012。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.49 作者会话 18 / item_1 / 作者命令
+- exit_code：1；原始日志行：1049。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.50 作者会话 18 / item_5 / 作者命令
+- exit_code：127；原始日志行：1057。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.51 作者会话 18 / item_4 / 作者命令
+- exit_code：127；原始日志行：1058。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.52 作者会话 19 / item_19 / selfcheck.py
+- exit_code：127；原始日志行：1126。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+## Authoring and repair policy
+
+- The code-size target is advisory: aim for it during initial rewriting, allow necessary functional repairs to grow beyond it, and stop size-only optimization after behavior acceptance. Report the actual measured size separately. Independent task-cost assessment may still request targeted usability improvements.
+- Implement retained behavior first, then minimize SOURCE + CONFIGURATION total tokens with the same frozen tokenizer; LOC is descriptive only. The token target must never block necessary functional repair. Count shared configuration as well as source, and do not hide executable logic in data. New or changed candidate text counts even when renamed as documentation, tests or binary assets; only unchanged original exclusions remain exempt.
+- Retained behavior has priority over code size. Repair confirmed regressions before further deduplication or compression. Make local changes to affected capabilities and necessary shared dependencies; add code when correctness requires it, even above the token target. Do not compensate by deleting unrelated behavior. Once the full retained check suite passes, preserve that candidate before incremental simplification; reject or revert simplifications that regress behavior. Report behavior acceptance and the unchanged token target separately.
+- Deduplicate repeated logic and configuration, share common steps, and use vectorization where behavior and representative performance are preserved.
+- Write comments and docstrings only for the next agent that has to use or change this code, and the default is none. Add one line where a reader of the code alone would have to guess, look elsewhere or run it to find out: units, shapes, coordinate conventions, value ranges, side effects, a non-obvious default, or why the code is written the way it is. When in doubt, leave it out. Never write what the code already says: comments that restate a statement, parameter lists that repeat the signature, examples, tutorials, change notes and module introductions; a name whose signature already tells a caller what it needs gets no docstring. Do not carry over the original project&#x27;s comments or docstrings, and do not grow a kept line into a paragraph. Keep text that is behavior (messages, help and format strings the contract requires) and legally required licenses and notices.
+- Preserve the behavior the selected capabilities describe and every entry of their external contract, with the required input formats, defaults and automatic behavior. Only the external contract fixes names: callers inside the project are yours to rewrite together with the code they call. Never require extra manual configuration or changes from a user of the external contract to replace behavior that previously happened automatically.
+- Retain input validation, error diagnostics, required outputs, warnings and logging. They are behavior, not disposable verbosity.
+- Keep the type annotations the external contract states, on exactly those interfaces. Annotate the rest where it helps a reader. No annotation of the original outside the external contract is a requirement, and none may be reported as verified compatibility.
+- Do not introduce substantial performance regression on representative workloads. Preserve specified workload and resource constraints; do not claim performance preservation without comparable measurements against the original.
+- Old implementations and duplicate compatibility paths need not survive when the new implementation accepts the required old files and calls. The verifier must validate those legacy inputs and callers against the replacement.
+- Never create custom configuration rules, an opcode interpreter or a new DSL to shrink code. Use ordinary code, shared data and existing standard configuration mechanisms; never move executable logic into encoded data.
+- Write your own implementation. You may recognize the project this graph describes: its published source is not the deliverable, so do not write its files, function bodies, comments or docstrings down from memory. Design the code from the capabilities and their external contract with the least code and structure that provides them. Only the external contract fixes names and signatures: the original&#x27;s modules and file layout, its internal classes, helpers and class hierarchies are not requirements, and merging, splitting or leaving them out is what this rewrite is for. Remembered code under other names or in another layout is still the original.
+- Write the first implementation from the frozen semantic knowledge alone. After a frozen check has failed on your implementation of a capability, the verifier may place that capability&#x27;s original production files under .nanolize-rewrite/reference/. You may read them to repair that capability and for nothing else; do not import or execute them. Original tests, legacy fixtures, history and raw verification evidence remain verifier-owned.
+- Keep selected scope, frozen checks and acceptance criteria unchanged during repair. Unknown type, performance or compatibility obligations remain explicit; passing a finite check set does not prove full equivalence.
+
+The index records the frozen SOURCE + CONFIGURATION token budget and tokenizer. Its requirement_evidence identifies typed interfaces, input validation, automatic behavior, diagnostics, performance and legacy-compatibility facts and unknowns by capability. Evidence available means supporting semantic records exist, not that the implementation, all annotations or representative performance have been verified.
+/usr/bin/bash: line 1: python: command not found
+total 212
+drwx------ 4 291081 users  4096 Nov 13 18:20 .
+drwx------ 8 291081 users  4096 Nov 13 18:20 ..
+-rw-r--r-- 1 291081 users 79556 Nov 13 14:46 contract.json
+-rw------- 1 291081 users 89357 Nov 13 18:20 feedback.json
+drwx------ 2 291081 users  4096 Nov 13 14:46 knowledge
+dr-xr-x--- 4 291081 users  4096 Nov 13 18:20 reference
+-rw-r--r-- 1 291081 users  3216 Nov 13 14:46 required-imports.json
+-rw-r--r-- 1 291081 users 22754 Nov 13 14:46 selfcheck.py
+/usr/bin/bash: line 1: python: command not found
+/usr/bin/bash: line 1: python: command not found
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 9, in &lt;module&gt;
+External contract: {
+  &quot;note&quot;: &quot;The contract marks each capability external or internal. An external capability lists its external contract under interface: the names with their signatures, the settings, commands, registered names, file formats and messages that users of the project rely on. Provide every entry exactly as it is listed. Everything behind those entries is yours to design: the modules and files, the classes and functions and their names. An internal capability states behavior only: implement it where the external capabilities need it, under names of your choosing, and when earlier calls already wrote code for it, read that code and build on its names instead of writing it a second time. The frozen checks of this job are behavior tests that an independent test agent wrote from this same graph through the external contract, together with the tests of the original that the owner kept. You never see them.&quot;
+}
+{&quot;capabilities&quot;: [&quot;native-runtime&quot;], &quot;details&quot;: {}, &quot;evidence_ids&quot;: [&quot;e-a9083315b02b5d12a64b1ffe&quot;], &quot;id&quot;: &quot;c-bb0a7b0bcf62af333c2cc780&quot;, &quot;kind&quot;: &quot;behavior&quot;, &quot;statement&quot;: &quot;Load the compatible native engine lazily, synchronize calls, control threads and isolate tuned model instances in workers; preserve framed worker responses, error propagation and opt-out anonymous usage counts.&quot;, &quot;status&quot;: &quot;reviewed&quot;}
+{&quot;capabilities&quot;: [&quot;native-runtime&quot;], &quot;details&quot;: {}, &quot;evidence_ids&quot;: [], &quot;id&quot;: &quot;fact.583b80c57fcd1f72.1&quot;, &quot;kind&quot;: &quot;behavior&quot;, &quot;statement&quot;: &quot;Both public thread setters reject negative integers, booleans, floating-point values including 1.0, strings, None, lists and dictionaries with ValueError and the exact message &#x27;threads must be a whole number, or 0 for the automatic count&#x27;.&quot;, &quot;status&quot;: &quot;reviewed&quot;}
+{&quot;capabilities&quot;: [&quot;native-runtime&quot;], &quot;details&quot;: {}, &quot;evidence_ids&quot;: [], &quot;id&quot;: &quot;fact.583b80c57fcd1f72.2&quot;, &quot;kind&quot;: &quot;behavior&quot;, &quot;statement&quot;: &quot;The ABI binder requires entries named cactus_load, cactus_models, cactus_last_error, cactus_init, cactus_complete, cactus_set_audio, cactus_set_threads, cactus_reset, cactus_embed, cactus_transcribe, cactus_stream_transcribe_process, cactus_stream_transcribe_stop and cactus_describe. Missing any one raises RuntimeError with the exact message &#x27;incompatible engine: Cactus 4 requires the cactus_* ABI&#x27;.&quot;, &quot;status&quot;: &quot;reviewed&quot;}
+{&quot;capabilities&quot;: [&quot;native-runtime&quot;], &quot;details&quot;: {}, &quot;evidence_ids&quot;: [], &quot;id&quot;: &quot;fact.583b80c57fcd1f72.4&quot;, &quot;kind&quot;: &quot;behavior&quot;, &quot;statement&quot;: &quot;The native last-error entry returns a C character pointer; the audio-setting, thread-setting and reset entries have None as their return type; all other required entries return C integers.&quot;, &quot;status&quot;: &quot;reviewed&quot;}
+{&quot;capabilities&quot;: [&quot;native-runtime&quot;], &quot;details&quot;: {}, &quot;evidence_ids&quot;: [], &quot;id&quot;: &quot;fact.583b80c57fcd1f72.5&quot;, &quot;kind&quot;: &quot;behavior&quot;, &quot;statement&quot;: &quot;The load entry takes a C character pointer and an unsigned 64-bit integer, represented as c_ulong on the tested platform. The initialization entry takes three C character pointers, and the thread-setting entry takes one C integer.&quot;, &quot;status&quot;: &quot;reviewed&quot;}
+AttributeError: &#x27;list&#x27; object has no attribute &#x27;keys&#x27;
+total 200
+drwx------ 4 291081 users  4096 Nov 13 18:33 .
+drwx------ 9 291081 users  4096 Nov 13 18:33 ..
+-rw-r--r-- 1 291081 users 79556 Nov 13 14:46 contract.json
+-rw------- 1 291081 users 76436 Nov 13 18:33 feedback.json
+drwx------ 2 291081 users  4096 Nov 13 14:46 knowledge
+dr-xr-x--- 4 291081 users  4096 Nov 13 18:33 reference
+-rw-r--r-- 1 291081 users  3216 Nov 13 14:46 required-imports.json
+-rw-r--r-- 1 291081 users 22754 Nov 13 14:46 selfcheck.py
+/usr/bin/bash: line 1: python: command not found
+/usr/bin/bash: line 1: python: command not found
+/usr/bin/bash: line 1: python: command not found
+&lt;run&gt;/state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/authoring
+/usr/bin/bash: line 1: python: command not found
+/usr/bin/bash: line 1: python: command not found
+
+### 13.41 作者会话 14 / item_2 / 作者命令
+- exit_code：1；原始日志行：875。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.42 作者会话 14 / item_3 / 作者命令
+- exit_code：127；原始日志行：877。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.43 作者会话 15 / item_4 / 作者命令
+- exit_code：127；原始日志行：922。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.44 作者会话 15 / item_10 / 作者命令
+- exit_code：1；原始日志行：936。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.45 作者会话 16 / item_2 / 作者命令
+- exit_code：1；原始日志行：956。
+- 原因：命令返回非零；文件枚举为空会使 rg 返回 1，其他原因按下方原文保留。
+- 处理：作者继续按指定契约路径读取并实现；未调整检查规则。
+- 结果：后续作者命令继续运行；作业最终状态另列。
+
+### 13.46 作者会话 16 / item_3 / 作者命令
+- exit_code：127；原始日志行：958。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.47 作者会话 17 / item_5 / 作者命令
+- exit_code：127；原始日志行：1011。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。
+
+### 13.48 作者会话 17 / item_4 / 作者命令
+- exit_code：127；原始日志行：1012。
+- 原因：宿主没有无版本的 python 命令别名。
+- 处理：改用 python3；没有修改文件、测试或配置。
+- 结果：同一作者会话后续 python3 命令已成功。</pre></details><details><summary>14. 作者报告跨组归档格式版本不一致（未独立复现）</summary><pre>- 步骤：第三组实现收尾；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因判断：独立作者报告训练草稿的写入版本与其读取到的推理契约不一致；这是作者诊断，尚未由正式冻结测试确认，不推断原版存在同样问题。
+- 处理：由作业保留到集成说明，并交给后续正式验证/修复；观察者没有改候选代码、契约或冻结测试。
+- 结果：该早期判断未独立复现，不能列为已确认的格式缺陷。最终导出、检查点及构建相关保留检查通过；这不扩大为所有归档版本均已验证。
+- 验收条件：未改变。</pre></details><details><summary>15. 初始候选写入验证器保留的许可文件而被拒绝</summary><pre>- 步骤：save_candidate，attempt 1；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：作者生成了 LICENSE 和 cactus/mlx/NOTICE，这两个路径由验证器保留；生产实现完成不等于允许覆盖这些输入。
+- 处理：控制器自动启动 repair-verifier-owned-integration，要求仅移除这两个路径的作者草稿，保留验证器持有的原版文件及全部生产实现；不允许改变冻结检查。
+- 结果：作者仅删除 LICENSE 与 cactus/mlx/NOTICE 的草稿及映射项，生产实现未改；自检通过，attempt 2 的 save_candidate 成功，07:51:51 UTC 开始正式行为验证。
+- 验收条件：未改变。</pre></details><details><summary>16. 正式行为比较出现回归，控制器按默认规则逐项修复</summary><pre>- 步骤：compare_behavior / run_agent / save_candidate；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：候选实现与原版冻结的行为有差异；包括缺失的兼容入口、数值计算/形状处理、文件布局或输出不一致。每轮原始检查结果独立保存，原版失败与候选回归分开。
+- 处理：由控制器选择失败能力，交独立作者修复生产代码，再次保存并复验；修改文件和范围见各轮操作及作者记录。观察者未修改生产实现、测试、冻结输入或验收策略。
+- 结果：已完成 17 轮完整比较；最终 verification-88 使用原 baseline-2，32 组状态通过、0 回归、0 未运行，另保留 3 组原版失败和 2 组原版超时。32 组中有 3 组用例全部跳过，不能作为执行过行为的证明。
+- 验收条件：未改变；不将未运行或原版失败的检查算作通过。
+
+### 16.1 verification-8
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-8.json。
+- 结果：status=regressed；通过 20 组，失败 12 组，未运行 0 组；候选 ea210c0a24853436ff13f6106a5ca206e7a90f4f。
+- 使用原版基线：baseline-2。
+
+#### 16.1.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.1.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.1.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.1.4 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.1.5 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.1.6 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.1.7 检查组回归（明细仅在本地）
+- 原版：passed；候选：passed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.1.8 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.1.9 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.1.10 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.1.11 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.1.12 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.2 verification-12
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-12.json。
+- 结果：status=regressed；通过 22 组，失败 10 组，未运行 0 组；候选 a87c316fcd910c07acb967c3401d0338484cfb5c。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：cactus/model/_forward.py, cactus/model/_network.py, cactus/model/architecture.py, cactus/model/build.py, nanolize-implementation-status.json。
+
+#### 16.2.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.2.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.2.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.2.4 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.2.5 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.2.6 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.2.7 检查组回归（明细仅在本地）
+- 原版：passed；候选：passed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.2.8 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.2.9 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.2.10 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.3 verification-16
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-16.json。
+- 结果：status=regressed；通过 23 组，失败 9 组，未运行 0 组；候选 39b01c823c49e1da5c97c538d6c636687c537925。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：cactus/mlx/checkpoint.py, cactus/mlx/ops.py, cactus/mlx/reference.py, nanolize-implementation-status.json。
+
+#### 16.3.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.3.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.3.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.3.4 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.3.5 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.3.6 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.3.7 检查组回归（明细仅在本地）
+- 原版：passed；候选：passed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.3.8 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.3.9 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.4 verification-21
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-21.json。
+- 结果：status=regressed；通过 24 组，失败 8 组，未运行 0 组；候选 ce91798a01042a429d35a55aac8246d238ecdf0a。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：cactus/agent/fetch.py, cactus/model/_export_tensors.py, cactus/model/build.py, cactus/model/export.py, nanolize-implementation-status.json。
+
+#### 16.4.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.4.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.4.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.4.4 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.4.5 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.4.6 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.4.7 检查组回归（明细仅在本地）
+- 原版：passed；候选：passed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.4.8 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.5 verification-26
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-26.json。
+- 结果：status=regressed；通过 25 组，失败 7 组，未运行 0 组；候选 4e808cc7ead94df60ffc1a8dfc9996f4cf74fbc6。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：cactus/mlx/models/nemotron_vision.py, cactus/mlx/vision.py, nanolize-implementation-status.json。
+
+#### 16.5.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.5.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.5.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.5.4 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.5.5 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.5.6 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.5.7 检查组回归（明细仅在本地）
+- 原版：passed；候选：passed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.6 verification-31
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-31.json。
+- 结果：status=regressed；通过 26 组，失败 6 组，未运行 0 组；候选 fcdef88b35edb6a36f5f338ccfb71d1f7d8874a9。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：cactus/cli/__init__.py, cactus/cli/download.py, cactus/cli/logging.py, cactus/cli/parser.py, cactus/model/whistle_finetune.py, nanolize-implementation-status.json。
+
+#### 16.6.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.6.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.6.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.6.4 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.6.5 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.6.6 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.7 verification-35
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-35.json。
+- 结果：status=regressed；通过 27 组，失败 5 组，未运行 0 组；候选 7f1b29ee1e09eee6a3752f7efbe01c7278889ad4。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：cactus/agent/text.py, cactus/playground/server.py, nanolize-implementation-status.json。
+
+#### 16.7.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.7.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.7.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.7.4 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.7.5 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.8 verification-40
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-40.json。
+- 结果：status=regressed；通过 27 组，失败 5 组，未运行 0 组；候选 dea47b2dc3b5162d7a138bb74929d5e948e5265a。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：cactus/agent/mirage.py, nanolize-implementation-status.json。
+
+#### 16.8.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.8.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.8.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.8.4 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.8.5 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.9 verification-46
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-46.json。
+- 结果：status=regressed；通过 25 组，失败 3 组，未运行 0 组；候选 8b2781d45755e330a597fde1cf92980de4115ecc。
+- 使用原版基线：baseline-45。
+- 相对上一次比较实际修改文件：MANIFEST.in, cactus/release.py, install.bat, install.sh, nanolize-implementation-status.json。
+
+#### 16.9.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.9.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.9.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.10 verification-51
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-51.json。
+- 结果：status=regressed；通过 27 组，失败 5 组，未运行 0 组；候选 8b2781d45755e330a597fde1cf92980de4115ecc。
+- 使用原版基线：baseline-2。
+
+#### 16.10.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.10.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.10.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.10.4 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.10.5 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.11 verification-57
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-57.json。
+- 结果：status=regressed；通过 28 组，失败 4 组，未运行 0 组；候选 539dc9210688fcf7cf92c0f4fb7ec88f9a64171b。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：cactus/model/tokenizer.py, nanolize-implementation-status.json。
+
+#### 16.11.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.11.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.11.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.11.4 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.12 verification-61
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-61.json。
+- 结果：status=regressed；通过 29 组，失败 3 组，未运行 0 组；候选 42ee7f95c5ae7ce1a3a0fc5425db803adbab0e13。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：.github/workflows/release.yaml, MANIFEST.in, cactus/release.py, nanolize-implementation-status.json, setup, setup.bat。
+
+#### 16.12.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.12.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.12.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.13 verification-66
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-66.json。
+- 结果：status=regressed；通过 29 组，失败 3 组，未运行 0 组；候选 54f21f1e3d7c27501e2fb42442af62be33ffcbcf。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：cactus/agent/mirage.py。
+
+#### 16.13.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.13.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.13.3 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.14 verification-72
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-72.json。
+- 结果：status=regressed；通过 30 组，失败 2 组，未运行 0 组；候选 66ce3d476ec20ad39aa73b007e55729994860661。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：cactus/model/run.py, nanolize-implementation-status.json。
+
+#### 16.14.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.14.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.15 verification-79
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-79.json。
+- 结果：status=regressed；通过 30 组，失败 2 组，未运行 0 组；候选 677a67341b06a2cd56440c1bae68c8d965791065。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：cactus/release.py, nanolize-implementation-status.json。
+
+#### 16.15.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+#### 16.15.2 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.16 verification-84
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-84.json。
+- 结果：status=regressed；通过 31 组，失败 1 组，未运行 0 组；候选 aa2edf7f36cf6a3041828dd58af8de86c536d911。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：cactus/agent/runtime.py, nanolize-implementation-status.json。
+
+#### 16.16.1 检查组回归（明细仅在本地）
+- 原版：passed；候选：failed；检查结论：regressed。
+- 后续结果：最近一次比较 verification-88 中为 passed；修改文件见相应轮次。
+
+### 16.17 verification-88
+- 原始记录：state/jobs/jobs/da80b5ab066e44eb863c88a180ce0713/artifacts/verification-88.json。
+- 结果：status=unverified；通过 32 组，失败 0 组，未运行 0 组；候选 43a699e2a465f11bed1c0fae8c5a48c1d71cf53d。
+- 使用原版基线：baseline-2。
+- 相对上一次比较实际修改文件：.github/workflows/release.yaml, cactus/agent/fetch.py, nanolize-implementation-status.json。
+- 本次没有 regressed 检查；未运行项仍不计为通过。</pre></details><details><summary>17. 模型核心修复的参考范围缺少被调用辅助函数</summary><pre>- 步骤：attempt 3 的 model-core 修复；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因判断：作者获准读取的功能范围引用了其他位置的辅助定义，当前契约和参考文件不能说明其几何计算规则；这里记录作者诊断，不推断具体根因已被确认。
+- 处理：作者继续处理其他已定位问题并记录数值兼容性未知项；没有等待用户回复，也没有扩大检查豁免或手工向作者传递原版源码。
+- 结果：候选 candidate-3 的第二轮完整比较中，两组模型核心设计检查均由 regressed 变为 passed。参考范围之外的规则仍未获得完整证明，不把这两组通过扩展为全部数值语义等价。
+- 验收条件：未改变。</pre></details><details><summary>18. 转换后保留的原版检查仍绑定内部属性</summary><pre>- 步骤：分析正式比较中的 vision 回归；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：只读核对原版 tests/test_mirage.py 第 32 行，fixture 使用 `monkeypatch.setattr(mirage, &quot;_loaded&quot;, None)`；新清单所有 interface 均未声明 _loaded，但这组原版检查被转换器保留。因此这份原版检查仍约束内部结构，符合文档对 helper/fixture 残留约束的已知说明。
+- 处理：冻结后没有删除或改写该检查，也没有增加内部名称来重写清单；继续由作者修复候选，使其满足保留检查。
+- 结果：candidate-15 已补 _loaded；随后修复 runtime._lib 可调用约定，candidate-16 和最终 candidate-17 中该组均通过，详见问题 23。
+- 验收条件：未改变；没有通过删测试来扩大重写自由。</pre></details><details><summary>19. 人工接口补充未逐项列出 CLI 子命令注册名</summary><pre>- 步骤：复核 CLI 输出回归及人工 interface 完整性；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：我在人工补充中列了选项与默认值，但子命令只泛指“全部原版子命令”，没有逐项写明注册名。这个外部契约不够具体，不能仅凭该句可靠重建命令集合。
+- 处理：不重写已冻结清单，不删除完整 help 输出比较；默认 CLI 修复作者依据获准参考补齐路由及文字格式，再由保留检查复验。
+- 结果：candidate-7 的完整比较中 cli-help-output 由 regressed 变为 passed，恢复的完整帮助文本已匹配原版。未被检查覆盖的 CLI 行为仍不能据此声称全部等价。
+- 验收条件：未改变；该条作为人工准备缺口保留，不能算成转换器自动补全。</pre></details><details><summary>20. CLI 与语音训练草稿的参数约定不一致</summary><pre>- 步骤：attempt 7 的 CLI 兼容修复；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因判断：不同实现范围对命令 Namespace 的训练数据字段作了不同解释，调用方与被调用方不一致；作者在连接恢复的 CLI 路由时发现此问题。
+- 处理：作者在当前修复中统一调用与训练入口参数，保留原版命令行选项；不改冻结检查。
+- 结果：candidate-7 修改了 cactus/model/whistle_finetune.py 及 CLI 入口/解析文件，自检和完整帮助输出检查通过，语音训练的已有设计检查保持通过；没有执行完整模型训练，因此仍保留端到端训练的验证边界。
+- 验收条件：未改变。</pre></details><details><summary>21. 暂停恢复后原版基线无法直接复用</summary><pre>- 步骤：恢复后的 candidate-10 compare_behavior；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：CLI 恢复继承的 PATH 与首次服务启动时不同。baseline-2 与新 baseline-45 只有 environment 指纹不同；原版树、检查定义、输入、原生文件和命名文件指纹一致，解释器和依赖元数据也一致。使用原进度服务环境复算后，37 组检查全部匹配旧指纹，确认差异变量仅 PATH。
+- 绕过：控制器先按工具要求重新 capture_baseline，耗时 943.328 秒；发现两组旧通过检查新超时后，使用 job-hold 在比较结束后暂停。随后仅从仍运行的原进度服务读取标准环境变量，保存 notes/original-check-environment.json，并在 job-resume 子进程环境恢复原 PATH。37 组环境指纹复核一致后恢复。未修改 nanolize 代码、原版、检查定义、阈值或 config.json；旧、新基线 artifact 均保留。
+- 结果：新 baseline-45 是 30 通过、3 失败、4 超时；新增超时为 original-test_run 与 contract-model_core_e6960d80-da80b5-5，原本 32 通过、3 失败、2 超时。恢复原 PATH 后 verification-51 的 baseline_path 与 baseline-2 完全相同，原先 32 组判据已恢复；结果为 27 组通过、5 组回归，原版失败/超时回到 5 组（3 组非判据、2 组未验证）。中间基线导致的两项判据缺失未计为修复通过，最终验收标准未放宽。</pre></details><details><summary>22. 控制器因缺少具体失败诊断而等待澄清</summary><pre>- 步骤：controller rounds 33–34 / request_clarification；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：自动反馈只有资源异常类别和摘要，作者不知道真正缺少的安装入口与发布工作流，也未识别 tokenizer 本地配置被忽略以及 retained fixture 的内部状态耦合。最初人工 interface 没有写明这些安装入口名和分词器路径设置，属于准备与反馈粒度缺口。
+- 绕过：观察者只读核对正式失败记录和原版生产源码，通过 job-answer 提供 3480 字符左右的行为诊断，见 notes/clarification-1-answer.txt；指出 setup/setup.bat、release.yaml 的入口语义、TOKENIZER_DIR/TOKENIZER_PREFIX 的本地优先规则、_loaded 的保留检查兼容需求及原始基线缺口。没有提供原版源码、测试正文或私有预期输出文件，没有附加详细 knowledge 库，没有修改清单或测试。使用原 PATH job-resume。
+- 结果：clarification-1 已回答，作业恢复。作者另问 TOKENIZER_DIR/TOKENIZER_PREFIX 默认值及 vocab_size 边界，经原版静态核对后，使用正式 job-call/request_clarification 和 job-answer 补充 clarification-2，见 notes/tokenizer-followup-answer.txt；无新增暂停。这些入口与分词器修复经后续完整比较通过；最终 candidate-17 的全部 32 组原通过检查状态均通过。
+- 验收条件：未改变；额外语义诊断对作者的帮助单独记录，不声称整个修复仍是完全无源信息。</pre></details><details><summary>23. 保留的原版检查继续约束内部访问器和工作流文本布局</summary><pre>- 步骤：candidate-15 验证 / controller clarification-3；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：_loaded 缺失已修复，但原版 fixture 还把 runtime._lib 当作可调用库访问器，草稿却把它用作缓存变量。发布检查通过文本切割抽取 YAML 脚本块，不能接受等义但布局不同的 workflow；版本块定位失败，最后一个 literal run 块又抽到了构建而非打标签步骤，因而缺 python 是后续症状。
+- 绕过：通过 notes/clarification-3-answer.txt 和 job-answer 只提供原版访问器语义、工作流格式约束、独立脚本入口约束和调度语义；未给出源码正文、测试正文或私有预期输出。按原 PATH 恢复，由独立作者实现；不修改原版检查、基线或阈值，不增加宿主 python 别名来掩盖抽错脚本的问题。
+- 结果：clarification-3 已回答；candidate-16 修复视觉检查，candidate-17 修复发布检查。最终完整复验 32 组状态通过、0 回归，仍使用 baseline-2；检查和阈值未修改。
+- 验收条件：未放宽。残留测试结构耦合限制了这次 graph-contract 重写的自由度，不能声称全部检查都是纯外部行为测试。</pre></details><details><summary>24. 发布前引擎文件检查退化为读取清单字段</summary><pre>- 步骤：candidate-17 发布工作流修复时作者发现；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：只读核对 candidate-16 的 cactus/agent/fetch.py，unpublished_engine_wheels 仅返回清单 wheels 字段；原版会核对固定版本 wheel 的远端存在性、大小和校验和，并返回缺失/无效项。
+- 绕过：由原本正在修复发布流程的独立作者修复该必要依赖，观察者未编辑候选源码。修改文件应为 cactus/agent/fetch.py，最终按实际提交复核。
+- 结果：最终提交 43a699e2a465f11bed1c0fae8c5a48c1d71cf53d 确实修改了 cactus/agent/fetch.py；作者自检及完整比较通过。artifacts 节点在冻结时未补到有效测试，未另行执行真实远端完整校验，不能用其他检查通过来声称该功能完整验证。
+- 验收条件：未修改；这个实例体现了未验证节点的实际风险。</pre></details><details><summary>25. 自动公开报告发布失败</summary><pre>- 步骤：deliver / publish_report_site；作业 ID：da80b5ab066e44eb863c88a180ce0713。
+- 原因：发布器将 GitHub API 失败统一归为上述信息，未保存具体端点/状态码；随后只读检查确认宿主和相同后台环境均可登录 ggeeyyi，目标仓库为 PUBLIC、Pages 已配置，指定 API 版本的仓库请求也成功，暂不能确定最初失败的具体原因。
+- 绕过：保留本地原生图报告，从宿主用同一分支 report-publish 重试发布；随后在独立副本补充实验数字和问题摘要，使用新的不可变前缀发布，不修改检查或候选代码。
+- 结果：原生报告重试成功，publication_status=published、anonymous_access_verified=true；提交 f87513f6c6e939a01a15b40201265d339df9fda0，收据 notes/native-publication-retry.json。未改动 nanolize 代码或验收条件；初次发布失败的具体原因仍未知。</pre></details><details><summary>26. 公开功能图在手机上初始缩放过小</summary><pre>- 步骤：公开站点桌面/手机浏览器检查；作业 ID：da80b5ab066e44eb863c88a180ce0713（作业已经完成）。
+- 原因：26 个叶节点横向排列，原生 Fit frame 初始缩放在 390px 手机上为 3.7%，标签和点击目标过小；桌面同样只有约 11%。截图 notes/report-mobile.png 和 notes/report-desktop.png 记录原始外观。
+- 绕过：仅在 notes/build_public_report.py 生成的公开报告副本中，将初次显示缩放提高到 85%，居中显示根节点，保留搜索、拖动、缩放和 Fit frame 全图按钮；不改 nanolize 源码、作业工件或验收条件。使用新目录、新发布前缀保留原生报告。
+- 结果：改后桌面（1440px）和手机（390px）预览均能实际点击可见节点并展开对应证据，JavaScript 错误为 0；截图与点击结果保存在 notes/preview-desktop.*、notes/preview-mobile.*。修改仅影响初始视图，全部 27 节点与证据保留；最终公开访问校验另存发布收据。</pre></details></main></body></html>
