@@ -1,0 +1,47 @@
+[
+  {
+    "id": "N1",
+    "record_id": 3,
+    "title": "Metal 内核遗漏生产源码分类",
+    "observed": "9413138 的 SOURCE_SUFFIXES 不包含 .metal，导致 Cactus 的 7 个 Metal 内核未被识别为生产源码，影响功能归属和体积计量。",
+    "cause": "repository.py 依据后缀分类源码，Metal 后缀缺失。",
+    "required_change": "在 src/nanolize/repository.py 的 SOURCE_SUFFIXES 中加入 .metal，并覆盖生产源码归属与 token 度量。",
+    "status": "本地已修复：be51197；16 项相关测试通过。未推送或合入原分支。",
+    "evidence": [
+      "src/nanolize/repository.py:45",
+      "tests/test_code_size.py",
+      "本次原记录 #3 / 昨天 #4"
+    ],
+    "is_new": false
+  },
+  {
+    "id": "N2",
+    "record_id": 25,
+    "title": "未评估任务摘要显示错误的任务类型",
+    "observed": "本次实际配置 task_types=[\"modify\"]；交付的 task_effort.task_types 却是 understand、diagnose、modify、execute 四类。",
+    "cause": "execution.py 的 behavior_acceptance_pending 返回值未带 policy；effort_public.py 随后退回四类旧默认值。这是配置到公开摘要的信息丢失。",
+    "required_change": "未评估结果也应传递实际 task_types 等公开策略字段，并验证公开摘要与冻结配置一致。涉及 src/nanolize/execution.py 与 src/nanolize/effort_public.py。",
+    "status": "分支代码尚未修复；本报告单独注明真实配置。准备成本与候选评估未执行的过程记录见下方原记录 #25。",
+    "evidence": [
+      "src/nanolize/execution.py:2642",
+      "src/nanolize/effort_public.py:294",
+      "本次 config.json 与 public.json / 原记录 #25"
+    ],
+    "is_new": true
+  },
+  {
+    "id": "N3",
+    "record_id": 27,
+    "title": "功能图初次渲染缩放至文字不可读",
+    "observed": "同一份报告桌面初始缩放为 10.7%，手机为 3.6%；手机 20px 标签的实际渲染高度约 0.866px。",
+    "cause": "viewer.js 首次渲染无条件调用 fitTree，将整张宽图塞入视窗；fitCamera 允许缩小到 0.5%，缺少初始视角可读性约束。",
+    "required_change": "修改 src/nanolize/assets/viewer.js 的初始视角，使用可读缩放并定位节点，保留用户主动选择的 Fit frame 功能。",
+    "status": "分支代码尚未修复；仅公开 HTML 副本采用首节点居中、85% 的处理。桌面/手机搜索、适配、缩放和拖动检查通过。",
+    "evidence": [
+      "src/nanolize/assets/viewer.js:438",
+      "src/nanolize/assets/viewer.js:649",
+      "notes/report-qa.json、notes/report-interactions.json / 本次原记录 #27 / 昨天 #26"
+    ],
+    "is_new": false
+  }
+]
