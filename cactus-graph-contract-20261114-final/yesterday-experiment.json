@@ -1,0 +1,1567 @@
+{
+  "job_id": "da80b5ab066e44eb863c88a180ce0713",
+  "status": "completed_with_gaps",
+  "metadata": {
+    "started_at": "2026-11-13T05:37:33.691876+00:00",
+    "nanolize_repository": "WeianMao/nanolize",
+    "nanolize_branch": "claude/graph-contract",
+    "nanolize_commit": "eb54c4328809d3e37b83301d8a934e520aa84234",
+    "target_repository": "cactus-compute/cactus",
+    "target_commit": "ae1a8dee463912d383b49cd319f2a5cdc8690f91",
+    "scope": "all",
+    "budget_overrides": {},
+    "acceptance_relaxations": []
+  },
+  "conversion": {
+    "checks_left_out": 13,
+    "checks_not_inspected": 1,
+    "external_capabilities_without_check": 10,
+    "internal_capabilities_not_reached": 0,
+    "unresolved_exports": 2,
+    "carry_candidates": 0
+  },
+  "scope": {
+    "selected": 27,
+    "total": 27,
+    "excluded": 0
+  },
+  "binding": {
+    "original_git_head": "d83d120ac5ac49a8248d7c5b4103f89b455d93f5",
+    "candidate_git_head": "43a699e2a465f11bed1c0fae8c5a48c1d71cf53d",
+    "candidate_source_sha256": "47afbc29540294607565c80e102694510cb8047c3051a95b011d4a0ec777ca87",
+    "candidate_contract_sha256": "129928defa600ad870678005fe4656502e53ed5ea2a86bc2496370b50834c4d0",
+    "plan_sha256": "e7362b0dc2dfb41b1cc388086c91aa55ede4d525079f65bc8952fc5894b70fc5",
+    "verification_sha256": "eff49bdfb3a7ca67233ebe1f3b9d39e3da4d998cb5127110dbb429bef3bb0c27",
+    "candidate_code_size_sha256": "8f8dec72a717ac25d0a0680be642b174646e9b619aa9f0a95769801d0d777a18"
+  },
+  "code_size": {
+    "metric": "tokens",
+    "tokenizer": {
+      "library": "tiktoken",
+      "version": "0.12.0",
+      "encoding": "cl100k_base",
+      "ranks_sha256": "223921b76ee99bde995b7ff738513eef100fb51d18c93597a113bcffe865b2a7",
+      "text_policy": "raw_decoded_text_per_file",
+      "classification": "source_and_configuration_v2",
+      "special_tokens": "ordinary_text",
+      "file_boundaries": "independent_sum",
+      "decoding": "python_encoding_cookie_else_utf8_strict",
+      "exclusion_policy": "unchanged_original_tests_documentation_launcher_configuration_binary_assets"
+    },
+    "before": 141485,
+    "after": 77152,
+    "reduction_percent": 45.47,
+    "source_before": 127958,
+    "source_after": 68542,
+    "configuration_before": 13527,
+    "configuration_after": 8610,
+    "observed_before": 141485,
+    "observed_after": 77152,
+    "complete": true,
+    "target_tokens": 70742,
+    "budget_status": "unmet",
+    "target_policy": "advisory",
+    "code_only": {
+      "before": 135211,
+      "after": 76683
+    },
+    "documented_percent": {
+      "original": 19.6,
+      "delivered": 0.3
+    }
+  },
+  "retained_percent": 54.530162208007916,
+  "same_path_weighted_unchanged_percent": 10.7,
+  "original_overlap": {
+    "compared_lines": 4342,
+    "documentation_percent": 1,
+    "function_limit_percent": 60,
+    "function_lines": 8,
+    "functions": 0,
+    "limit_percent": 40,
+    "mode": "auto",
+    "percent": 8
+  },
+  "anti_copy": {
+    "returned_unique_files": 0,
+    "total_returns": 0,
+    "files": {}
+  },
+  "test_design": {
+    "accepted_files": 20,
+    "covered_nodes": [
+      "checkpoints",
+      "export",
+      "hosted-platform",
+      "mlx-kernels",
+      "mlx-models",
+      "mlx-vision",
+      "model-config",
+      "model-core",
+      "model-inference",
+      "native-runtime",
+      "playground",
+      "quantization",
+      "speech",
+      "speech-training",
+      "text-agents",
+      "training",
+      "vision"
+    ],
+    "unverified_at_freeze": [
+      "artifacts",
+      "cli",
+      "distribution",
+      "environments",
+      "grounding",
+      "mlx-inference",
+      "speech-ui",
+      "tokenization",
+      "tools"
+    ],
+    "rejected_proposals": 30,
+    "runner_failures": 0
+  },
+  "initial_frozen_baseline_groups": {
+    "passed": 32,
+    "failed": 3,
+    "timed_out": 2
+  },
+  "baseline_history": [
+    {
+      "artifact": "baseline-1",
+      "checks": 17,
+      "statuses": {
+        "passed": 12,
+        "failed": 3,
+        "timed_out": 2
+      }
+    },
+    {
+      "artifact": "baseline-2",
+      "checks": 37,
+      "statuses": {
+        "passed": 32,
+        "failed": 3,
+        "timed_out": 2
+      }
+    },
+    {
+      "artifact": "baseline-45",
+      "checks": 37,
+      "statuses": {
+        "passed": 30,
+        "failed": 3,
+        "timed_out": 4
+      }
+    }
+  ],
+  "all_skipped_pass_status_groups": 3,
+  "all_skipped_cases": 7,
+  "final_validation": {
+    "before": 11477,
+    "after": 6412,
+    "reduction_percent": 44.132,
+    "capabilities": 27,
+    "count_unit": "capabilities",
+    "status_counts": {
+      "verified": 15,
+      "failed": 0,
+      "partial": 2,
+      "unknown": 10,
+      "retired": 0
+    },
+    "evidence_counts": {
+      "failed": 0,
+      "direct_passed": 15,
+      "direct_partial": 2,
+      "related_passed": 5,
+      "related_only": 0,
+      "unverified": 5,
+      "retired": 0
+    },
+    "aggregate_status_counts": {
+      "verified": 15,
+      "failed": 0,
+      "partial": 7,
+      "unknown": 5,
+      "retired": 0
+    },
+    "verification_status": "unverified",
+    "verification_tests": {
+      "original_total": 16,
+      "retained": 37,
+      "retired": 0,
+      "needs_adaptation": 0,
+      "adapted": 0,
+      "contract": 21,
+      "passed": 32,
+      "failed": 0,
+      "fixed_baseline_failure": 1,
+      "not_run": 0
+    },
+    "unattributed_checks": [
+      {
+        "name": "original-mlx_inference-test_embedding",
+        "status": "passed",
+        "role": "original",
+        "scope": "retained",
+        "capabilities": [
+          "mlx-inference",
+          "mlx-models",
+          "mlx-kernels",
+          "mlx-vision"
+        ],
+        "baseline_status": "passed",
+        "candidate_status": "passed",
+        "target_capabilities": [],
+        "attribution": "unattributed",
+        "facts_given": 3,
+        "baseline_cases": {
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 1,
+          "executed": 0
+        },
+        "candidate_cases": {
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 1,
+          "executed": 0
+        }
+      },
+      {
+        "name": "original-mlx_inference-test_fused_activation",
+        "status": "passed",
+        "role": "original",
+        "scope": "retained",
+        "capabilities": [
+          "mlx-inference",
+          "mlx-models",
+          "mlx-kernels",
+          "mlx-vision"
+        ],
+        "baseline_status": "passed",
+        "candidate_status": "passed",
+        "target_capabilities": [],
+        "attribution": "unattributed",
+        "facts_given": 2,
+        "baseline_cases": {
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 1,
+          "executed": 0
+        },
+        "candidate_cases": {
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 1,
+          "executed": 0
+        }
+      },
+      {
+        "name": "original-mlx_inference-test_mtp",
+        "status": "preexisting_failure",
+        "role": "original",
+        "scope": "retained",
+        "capabilities": [
+          "mlx-inference",
+          "mlx-models",
+          "mlx-kernels",
+          "mlx-vision"
+        ],
+        "baseline_status": "failed",
+        "candidate_status": "failed",
+        "target_capabilities": [],
+        "attribution": "unattributed",
+        "facts_given": 14,
+        "baseline_cases": {
+          "passed": 0,
+          "failed": 0,
+          "errors": 1,
+          "skipped": 0,
+          "executed": 1
+        },
+        "candidate_cases": {
+          "passed": 0,
+          "failed": 0,
+          "errors": 1,
+          "skipped": 0,
+          "executed": 1
+        }
+      },
+      {
+        "name": "original-mlx_inference-test_runtime",
+        "status": "preexisting_failure",
+        "role": "original",
+        "scope": "retained",
+        "capabilities": [
+          "mlx-inference",
+          "mlx-models",
+          "mlx-kernels",
+          "mlx-vision"
+        ],
+        "baseline_status": "failed",
+        "candidate_status": "failed",
+        "target_capabilities": [],
+        "attribution": "unattributed",
+        "facts_given": 4,
+        "baseline_cases": {
+          "passed": 0,
+          "failed": 0,
+          "errors": 1,
+          "skipped": 0,
+          "executed": 1
+        },
+        "candidate_cases": {
+          "passed": 1,
+          "failed": 2,
+          "errors": 0,
+          "skipped": 0,
+          "executed": 3
+        }
+      },
+      {
+        "name": "original-mlx_inference-test_vision",
+        "status": "preexisting_failure",
+        "role": "original",
+        "scope": "retained",
+        "capabilities": [
+          "mlx-inference",
+          "mlx-models",
+          "mlx-kernels",
+          "mlx-vision"
+        ],
+        "baseline_status": "failed",
+        "candidate_status": "failed",
+        "target_capabilities": [],
+        "attribution": "unattributed",
+        "facts_given": 11,
+        "baseline_cases": {
+          "passed": 0,
+          "failed": 0,
+          "errors": 1,
+          "skipped": 0,
+          "executed": 1
+        },
+        "candidate_cases": {
+          "passed": 0,
+          "failed": 0,
+          "errors": 1,
+          "skipped": 0,
+          "executed": 1
+        }
+      },
+      {
+        "name": "original-test_inference",
+        "status": "passed",
+        "role": "original",
+        "scope": "retained",
+        "capabilities": [
+          "text-agents",
+          "native-runtime"
+        ],
+        "baseline_status": "passed",
+        "candidate_status": "passed",
+        "target_capabilities": [],
+        "attribution": "unattributed",
+        "facts_given": 5,
+        "baseline_cases": {
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 5,
+          "executed": 0
+        },
+        "candidate_cases": {
+          "passed": 0,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 5,
+          "executed": 0
+        }
+      },
+      {
+        "name": "original-test_packaging",
+        "status": "passed",
+        "role": "original",
+        "scope": "retained",
+        "capabilities": [
+          "distribution"
+        ],
+        "baseline_status": "passed",
+        "candidate_status": "passed",
+        "target_capabilities": [],
+        "attribution": "unattributed",
+        "facts_given": 3,
+        "baseline_cases": {
+          "passed": 2,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "executed": 2
+        },
+        "candidate_cases": {
+          "passed": 2,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "executed": 2
+        }
+      },
+      {
+        "name": "original-test_release",
+        "status": "passed",
+        "role": "original",
+        "scope": "retained",
+        "capabilities": [
+          "distribution",
+          "artifacts"
+        ],
+        "baseline_status": "passed",
+        "candidate_status": "passed",
+        "target_capabilities": [],
+        "attribution": "unattributed",
+        "facts_given": 8,
+        "baseline_cases": {
+          "passed": 6,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "executed": 6
+        },
+        "candidate_cases": {
+          "passed": 6,
+          "failed": 0,
+          "errors": 0,
+          "skipped": 0,
+          "executed": 6
+        }
+      },
+      {
+        "name": "cli-help-output",
+        "status": "passed",
+        "role": "contract",
+        "scope": "retained",
+        "capabilities": [
+          "cli"
+        ],
+        "baseline_status": "passed",
+        "candidate_status": "passed",
+        "target_capabilities": [],
+        "attribution": "unattributed"
+      }
+    ],
+    "leaf_coverage": {
+      "status": "ready",
+      "strict": false,
+      "valid": [
+        "checkpoints",
+        "export",
+        "hosted-platform",
+        "mlx-kernels",
+        "mlx-models",
+        "mlx-vision",
+        "model-config",
+        "model-core",
+        "model-inference",
+        "native-runtime",
+        "playground",
+        "quantization",
+        "speech",
+        "speech-training",
+        "text-agents",
+        "training",
+        "vision"
+      ],
+      "missing": [
+        "artifacts",
+        "cli",
+        "distribution",
+        "environments",
+        "grounding",
+        "mlx-inference",
+        "speech-ui",
+        "tokenization",
+        "tools"
+      ],
+      "exempted": [],
+      "why_missing": {
+        "artifacts": [
+          "no_behavioral_knockout_failure",
+          "private_structure"
+        ],
+        "cli": [
+          "no_behavioral_knockout_failure"
+        ],
+        "distribution": [
+          "no_behavioral_knockout_failure",
+          "private_structure"
+        ],
+        "environments": [
+          "no_check"
+        ],
+        "grounding": [
+          "no_check"
+        ],
+        "mlx-inference": [
+          "no_behavioral_knockout_failure",
+          "no_passing_cases",
+          "not_passing_on_original",
+          "not_repeated_identically",
+          "private_structure"
+        ],
+        "speech-ui": [
+          "no_check"
+        ],
+        "tokenization": [
+          "no_check"
+        ],
+        "tools": [
+          "no_check"
+        ]
+      }
+    },
+    "facts_given_checks": 36,
+    "source_reference_capabilities": 11,
+    "unmapped_candidate_files": [
+      "cactus/agent/__init__.py",
+      "cactus/model/__init__.py",
+      "cactus/playground/__init__.py"
+    ],
+    "ignored_mapping_files": [
+      ".github/workflows/release.yaml",
+      "MANIFEST.in",
+      "cactus/playground/index.html",
+      "install.bat",
+      "pyproject.toml",
+      "requirements-train.txt",
+      "requirements.txt",
+      "setup",
+      "setup.bat"
+    ],
+    "code_size": {
+      "metric": "tokens",
+      "tokenizer": {
+        "library": "tiktoken",
+        "version": "0.12.0",
+        "encoding": "cl100k_base",
+        "ranks_sha256": "223921b76ee99bde995b7ff738513eef100fb51d18c93597a113bcffe865b2a7",
+        "text_policy": "raw_decoded_text_per_file",
+        "classification": "source_and_configuration_v2",
+        "special_tokens": "ordinary_text",
+        "file_boundaries": "independent_sum",
+        "decoding": "python_encoding_cookie_else_utf8_strict",
+        "exclusion_policy": "unchanged_original_tests_documentation_launcher_configuration_binary_assets"
+      },
+      "before": 141485,
+      "after": 77152,
+      "reduction_percent": 45.47,
+      "source_before": 127958,
+      "source_after": 68542,
+      "configuration_before": 13527,
+      "configuration_after": 8610,
+      "observed_before": 141485,
+      "observed_after": 77152,
+      "complete": true,
+      "target_tokens": 70742,
+      "budget_status": "unmet",
+      "target_policy": "advisory",
+      "code_only": {
+        "before": 135211,
+        "after": 76683
+      },
+      "documented_percent": {
+        "original": 19.6,
+        "delivered": 0.3
+      }
+    },
+    "size_attribution": {
+      "metric": "tokens",
+      "tokenizer": {
+        "classification": "source_and_configuration_v2",
+        "decoding": "python_encoding_cookie_else_utf8_strict",
+        "encoding": "cl100k_base",
+        "exclusion_policy": "unchanged_original_tests_documentation_launcher_configuration_binary_assets",
+        "file_boundaries": "independent_sum",
+        "library": "tiktoken",
+        "ranks_sha256": "223921b76ee99bde995b7ff738513eef100fb51d18c93597a113bcffe865b2a7",
+        "special_tokens": "ordinary_text",
+        "text_policy": "raw_decoded_text_per_file",
+        "version": "0.12.0"
+      },
+      "complete": true,
+      "original_total": 141485,
+      "selected_original_estimate": 141485,
+      "candidate_total": 77152,
+      "overall_reduction": {
+        "tokens": 64333,
+        "percent": 45.47
+      },
+      "scope_reduction_estimate": {
+        "tokens": 0,
+        "percent": 0.0
+      },
+      "rewrite_reduction_estimate": {
+        "tokens": 64333,
+        "percent": 45.47
+      },
+      "shared_scope_files": [],
+      "method": "unique_mapped_source_plus_all_original_configuration",
+      "estimate_only": false,
+      "limitations": [
+        "Scope and rewrite attribution are mapped-file estimates, not exact semantic savings. Shared files count once and retained/removed code within them cannot be separated.",
+        "All original configuration is charged to the retained footprint. Configuration changes appear in the rewrite estimate and may include scope-related savings.",
+        "Overall reduction uses the full original as denominator; rewrite reduction uses the selected original estimate. Their percentages must not be added.",
+        "Negative reductions indicate growth; incomplete measurements do not establish savings."
+      ]
+    }
+  },
+  "final_obligations": {
+    "records": [
+      {
+        "capability": "cactus",
+        "status": "partial",
+        "obligations": [
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "unknown",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "unknown",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "partial",
+            "kind": "retained_child"
+          },
+          {
+            "status": "partial",
+            "kind": "retained_child"
+          },
+          {
+            "status": "partial",
+            "kind": "retained_child"
+          },
+          {
+            "status": "partial",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "partial",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "partial",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "unknown",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "unknown",
+            "kind": "retained_child"
+          },
+          {
+            "status": "unknown",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          },
+          {
+            "status": "verified",
+            "kind": "retained_child"
+          }
+        ]
+      },
+      {
+        "capability": "text-agents",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-test_inference",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-text_agents_92454e95-da80b5-27",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "tools",
+        "status": "unknown",
+        "obligations": [
+          {
+            "status": "unknown",
+            "kind": "coverage"
+          }
+        ]
+      },
+      {
+        "capability": "grounding",
+        "status": "unknown",
+        "obligations": [
+          {
+            "status": "unknown",
+            "kind": "coverage"
+          }
+        ]
+      },
+      {
+        "capability": "native-runtime",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-test_inference",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-native_runtime_222438d9-da80b5-24",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "artifacts",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-test_release",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "speech",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "contract-speech-da80b5-8",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "vision",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-test_mirage",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-vision-da80b5-12",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "environments",
+        "status": "unknown",
+        "obligations": [
+          {
+            "status": "unknown",
+            "kind": "coverage"
+          }
+        ]
+      },
+      {
+        "capability": "hosted-platform",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "contract-hosted_platform_574a3af0-da80b5-2",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "cli",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "cli-help-output",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "speech-ui",
+        "status": "unknown",
+        "obligations": [
+          {
+            "status": "unknown",
+            "kind": "coverage"
+          }
+        ]
+      },
+      {
+        "capability": "playground",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-test_playground",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-playground-da80b5-6",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "model-config",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "contract-model_config_74544cb9-da80b5-3",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "model-core",
+        "status": "partial",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-test_lora",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-test_mlx",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-model_core_e6960d80-da80b5-4",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-model_core_e6960d80-da80b5-5",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "tokenization",
+        "status": "unknown",
+        "obligations": [
+          {
+            "status": "unknown",
+            "kind": "coverage"
+          }
+        ]
+      },
+      {
+        "capability": "checkpoints",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "contract-checkpoints-da80b5-12",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "quantization",
+        "status": "partial",
+        "obligations": [
+          {
+            "status": "unknown",
+            "check": "original-test_quantize_mlx",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-quantization-da80b5-7",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "export",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-test_build",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-export-da80b5-16",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "training",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-test_lora",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-training-da80b5-11",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "speech-training",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "contract-speech_training_e0bc7e73-da80b5-25",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "model-inference",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-test_run",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-model_inference_6ff67fb3-da80b5-22",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-model_inference_6ff67fb3-da80b5-23",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "mlx-inference",
+        "status": "partial",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-mlx_inference-test_checkpoint",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "original-mlx_inference-test_embedding",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "original-mlx_inference-test_fused_activation",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-mlx_inference-test_mtp",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-mlx_inference-test_runtime",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-mlx_inference-test_vision",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "mlx-models",
+        "status": "partial",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-mlx_inference-test_checkpoint",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "original-mlx_inference-test_embedding",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "original-mlx_inference-test_fused_activation",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-mlx_inference-test_mtp",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-mlx_inference-test_runtime",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-mlx_inference-test_vision",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-mlx_models_2c00d857-da80b5-19",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-mlx_models_2c00d857-da80b5-20",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "mlx-kernels",
+        "status": "partial",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-mlx_inference-test_checkpoint",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "original-mlx_inference-test_embedding",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "original-mlx_inference-test_fused_activation",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-mlx_inference-test_mtp",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-mlx_inference-test_runtime",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-mlx_inference-test_vision",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-mlx_kernels_7009e905-da80b5-18",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "mlx-vision",
+        "status": "partial",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-mlx_inference-test_checkpoint",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "original-mlx_inference-test_embedding",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "original-mlx_inference-test_fused_activation",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-mlx_inference-test_mtp",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-mlx_inference-test_runtime",
+            "kind": "declared_check"
+          },
+          {
+            "status": "unknown",
+            "check": "original-mlx_inference-test_vision",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "contract-mlx_vision_ca65a721-da80b5-21",
+            "kind": "declared_check"
+          }
+        ]
+      },
+      {
+        "capability": "distribution",
+        "status": "verified",
+        "obligations": [
+          {
+            "status": "verified",
+            "check": "original-test_packaging",
+            "kind": "declared_check"
+          },
+          {
+            "status": "verified",
+            "check": "original-test_release",
+            "kind": "declared_check"
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "partial": 7,
+      "failed": 0,
+      "retired": 0,
+      "unknown": 5,
+      "verified": 15,
+      "total": 27,
+      "retained": 27,
+      "complete": false
+    },
+    "limitations": [
+      "Public summaries omit private evidence bindings and raw output."
+    ]
+  },
+  "usage": {
+    "total": {
+      "calls": 151,
+      "input_tokens": 41028783,
+      "output_tokens": 498764,
+      "cached_input_tokens": 34710656,
+      "agent_seconds": 15261.238599999999,
+      "usage_missing": 0,
+      "total_tokens": 41527547
+    },
+    "by_role": {
+      "controller": {
+        "calls": 56,
+        "input_tokens": 4059907,
+        "output_tokens": 21933,
+        "cached_input_tokens": 1591936,
+        "agent_seconds": 875.0467000000004,
+        "usage_missing": 0
+      },
+      "fact_reviewer": {
+        "calls": 16,
+        "input_tokens": 1671119,
+        "output_tokens": 7722,
+        "cached_input_tokens": 1220992,
+        "agent_seconds": 382.4319,
+        "usage_missing": 0
+      },
+      "fact_writer": {
+        "calls": 16,
+        "input_tokens": 1688737,
+        "output_tokens": 18154,
+        "cached_input_tokens": 1192320,
+        "agent_seconds": 589.5278000000001,
+        "usage_missing": 0
+      },
+      "test_designer": {
+        "calls": 43,
+        "input_tokens": 8180603,
+        "output_tokens": 155523,
+        "cached_input_tokens": 6774272,
+        "agent_seconds": 4232.9286999999995,
+        "usage_missing": 0
+      },
+      "test_reviewer": {
+        "calls": 1,
+        "input_tokens": 881853,
+        "output_tokens": 2590,
+        "cached_input_tokens": 769024,
+        "agent_seconds": 96.0775,
+        "usage_missing": 0
+      },
+      "author": {
+        "calls": 19,
+        "input_tokens": 24546564,
+        "output_tokens": 292842,
+        "cached_input_tokens": 23162112,
+        "agent_seconds": 9085.225999999999,
+        "usage_missing": 0
+      }
+    },
+    "dollar_cost": null,
+    "dollar_cost_reason": "Saved runner usage does not report billed currency or a resolved model price; tokens are observed usage, not an invented dollar estimate.",
+    "role_isolation": {
+      "designer_sessions": 43,
+      "author_sessions": 19,
+      "shared_sessions": 0,
+      "independent": true
+    }
+  },
+  "time": {
+    "prepared_at": "2026-11-13T05:37:33.691876+00:00",
+    "job_started_at": "2026-11-13T05:46:35.173838+00:00",
+    "finished_at": "2026-11-13T17:29:15.142046+00:00",
+    "job_seconds": 42159.968208,
+    "paused_seconds": 25532.060507000002,
+    "user_paused_seconds": 2026.272591,
+    "active_wall_seconds": 16627.907700999996,
+    "pause_intervals": [
+      {
+        "start": "2026-11-13T09:11:36.434998+00:00",
+        "end": "2026-11-13T09:45:22.707589+00:00",
+        "reason": "user_request"
+      },
+      {
+        "start": "2026-11-13T10:03:24.644122+00:00",
+        "end": "2026-11-13T10:05:21.870757+00:00",
+        "reason": "restore_original_check_environment"
+      },
+      {
+        "start": "2026-11-13T10:09:34.547871+00:00",
+        "end": "2026-11-13T10:11:44.815961+00:00",
+        "reason": "controller_clarification"
+      },
+      {
+        "start": "2026-11-13T10:44:48.008619+00:00",
+        "end": "2026-11-13T17:12:26.301810+00:00",
+        "reason": "controller_clarification"
+      }
+    ],
+    "including_preparation_seconds": 42701.45017
+  },
+  "owner_semantic_clarifications": 3,
+  "local_fixes": [
+    {
+      "commit": "b8d6fac",
+      "branch": "workaround/cactus-graph-contract-20261113",
+      "description": "Recognize .metal production source; 16 regression tests passed."
+    }
+  ],
+  "acceptance_relaxations": [],
+  "verification_history": [
+    {
+      "artifact": "verification-8",
+      "baseline": "baseline-2",
+      "candidate": "ea210c0a24853436ff13f6106a5ca206e7a90f4f",
+      "status": "regressed",
+      "tests": {
+        "passed": 20,
+        "failed": 12,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 63621,
+      "retained_percent": 44.96660423366435
+    },
+    {
+      "artifact": "verification-12",
+      "baseline": "baseline-2",
+      "candidate": "a87c316fcd910c07acb967c3401d0338484cfb5c",
+      "status": "regressed",
+      "tests": {
+        "passed": 22,
+        "failed": 10,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 66070,
+      "retained_percent": 46.69752977347422
+    },
+    {
+      "artifact": "verification-16",
+      "baseline": "baseline-2",
+      "candidate": "39b01c823c49e1da5c97c538d6c636687c537925",
+      "status": "regressed",
+      "tests": {
+        "passed": 23,
+        "failed": 9,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 65876,
+      "retained_percent": 46.560412764604024
+    },
+    {
+      "artifact": "verification-21",
+      "baseline": "baseline-2",
+      "candidate": "ce91798a01042a429d35a55aac8246d238ecdf0a",
+      "status": "regressed",
+      "tests": {
+        "passed": 24,
+        "failed": 8,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 69846,
+      "retained_percent": 49.36636392550447
+    },
+    {
+      "artifact": "verification-26",
+      "baseline": "baseline-2",
+      "candidate": "4e808cc7ead94df60ffc1a8dfc9996f4cf74fbc6",
+      "status": "regressed",
+      "tests": {
+        "passed": 25,
+        "failed": 7,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 69978,
+      "retained_percent": 49.45966003463265
+    },
+    {
+      "artifact": "verification-31",
+      "baseline": "baseline-2",
+      "candidate": "fcdef88b35edb6a36f5f338ccfb71d1f7d8874a9",
+      "status": "regressed",
+      "tests": {
+        "passed": 26,
+        "failed": 6,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 73195,
+      "retained_percent": 51.73339930027918
+    },
+    {
+      "artifact": "verification-35",
+      "baseline": "baseline-2",
+      "candidate": "7f1b29ee1e09eee6a3752f7efbe01c7278889ad4",
+      "status": "regressed",
+      "tests": {
+        "passed": 27,
+        "failed": 5,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 73127,
+      "retained_percent": 51.68533766830406
+    },
+    {
+      "artifact": "verification-40",
+      "baseline": "baseline-2",
+      "candidate": "dea47b2dc3b5162d7a138bb74929d5e948e5265a",
+      "status": "regressed",
+      "tests": {
+        "passed": 27,
+        "failed": 5,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 73636,
+      "retained_percent": 52.04509311941195
+    },
+    {
+      "artifact": "verification-46",
+      "baseline": "baseline-45",
+      "candidate": "8b2781d45755e330a597fde1cf92980de4115ecc",
+      "status": "regressed",
+      "tests": {
+        "passed": 25,
+        "failed": 3,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 74056,
+      "retained_percent": 52.34194437572888
+    },
+    {
+      "artifact": "verification-51",
+      "baseline": "baseline-2",
+      "candidate": "8b2781d45755e330a597fde1cf92980de4115ecc",
+      "status": "regressed",
+      "tests": {
+        "passed": 27,
+        "failed": 5,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 74056,
+      "retained_percent": 52.34194437572888
+    },
+    {
+      "artifact": "verification-57",
+      "baseline": "baseline-2",
+      "candidate": "539dc9210688fcf7cf92c0f4fb7ec88f9a64171b",
+      "status": "regressed",
+      "tests": {
+        "passed": 28,
+        "failed": 4,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 74228,
+      "retained_percent": 52.46351203307771
+    },
+    {
+      "artifact": "verification-61",
+      "baseline": "baseline-2",
+      "candidate": "42ee7f95c5ae7ce1a3a0fc5425db803adbab0e13",
+      "status": "regressed",
+      "tests": {
+        "passed": 29,
+        "failed": 3,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 75428,
+      "retained_percent": 53.31165847969749
+    },
+    {
+      "artifact": "verification-66",
+      "baseline": "baseline-2",
+      "candidate": "54f21f1e3d7c27501e2fb42442af62be33ffcbcf",
+      "status": "regressed",
+      "tests": {
+        "passed": 29,
+        "failed": 3,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 75473,
+      "retained_percent": 53.343463971445736
+    },
+    {
+      "artifact": "verification-72",
+      "baseline": "baseline-2",
+      "candidate": "66ce3d476ec20ad39aa73b007e55729994860661",
+      "status": "regressed",
+      "tests": {
+        "passed": 30,
+        "failed": 2,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 75400,
+      "retained_percent": 53.291868395943034
+    },
+    {
+      "artifact": "verification-79",
+      "baseline": "baseline-2",
+      "candidate": "677a67341b06a2cd56440c1bae68c8d965791065",
+      "status": "regressed",
+      "tests": {
+        "passed": 30,
+        "failed": 2,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 75321,
+      "retained_percent": 53.23603208820723
+    },
+    {
+      "artifact": "verification-84",
+      "baseline": "baseline-2",
+      "candidate": "aa2edf7f36cf6a3041828dd58af8de86c536d911",
+      "status": "regressed",
+      "tests": {
+        "passed": 31,
+        "failed": 1,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 75445,
+      "retained_percent": 53.32367388769128
+    },
+    {
+      "artifact": "verification-88",
+      "baseline": "baseline-2",
+      "candidate": "43a699e2a465f11bed1c0fae8c5a48c1d71cf53d",
+      "status": "unverified",
+      "tests": {
+        "passed": 32,
+        "failed": 0,
+        "not_run": 0,
+        "retained": 37
+      },
+      "tokens": 77152,
+      "retained_percent": 54.530162208007916
+    }
+  ]
+}

@@ -1,0 +1,701 @@
+{
+  "job_id": "d320acad0310400eba2b1761d1c58237",
+  "status": "completed_with_gaps",
+  "tool_commit": "9413138036b515f119ff63fa6db082a6148103f0",
+  "local_fixes": [
+    "be51197"
+  ],
+  "source_commit": "ae1a8dee463912d383b49cd319f2a5cdc8690f91",
+  "scope": {
+    "selected": 27,
+    "total": 27,
+    "excluded": 0
+  },
+  "code_size": {
+    "before": 141485,
+    "after": 63429,
+    "retained_percent": 44.83090080220518,
+    "reduction_percent": 55.16909919779482
+  },
+  "same_path_weighted_unchanged_percent": 10.4,
+  "original_overlap": {
+    "compared_lines": 3987,
+    "documentation_percent": 1,
+    "function_limit_percent": 60,
+    "function_lines": 8,
+    "functions": 0,
+    "limit_percent": 40,
+    "mode": "auto",
+    "percent": 8
+  },
+  "anti_copy": {
+    "returned_unique_files": 0,
+    "total_returns": 0,
+    "files": {}
+  },
+  "test_design": {
+    "accepted_files": 13,
+    "covered_nodes": [
+      "artifacts",
+      "checkpoints",
+      "hosted-platform",
+      "mlx-inference",
+      "mlx-vision",
+      "model-config",
+      "model-core",
+      "quantization",
+      "speech",
+      "speech-training",
+      "speech-ui",
+      "text-agents",
+      "tokenization"
+    ],
+    "unverified_at_freeze": [
+      "distribution",
+      "environments",
+      "grounding",
+      "text-agents",
+      "tools"
+    ],
+    "rejected_proposals": 6,
+    "runner_failures": 0,
+    "validly_covered_nodes": [
+      "artifacts",
+      "checkpoints",
+      "hosted-platform",
+      "mlx-inference",
+      "mlx-vision",
+      "model-config",
+      "model-core",
+      "quantization",
+      "speech",
+      "speech-training",
+      "speech-ui",
+      "tokenization"
+    ],
+    "valid_leaf_count": 21,
+    "missing_reasons": {
+      "distribution": [
+        "no_behavioral_knockout_failure"
+      ],
+      "environments": [
+        "no_check"
+      ],
+      "grounding": [
+        "no_check"
+      ],
+      "text-agents": [
+        "import_only_knockout_failure"
+      ],
+      "tools": [
+        "no_check"
+      ]
+    }
+  },
+  "conversion": {
+    "checks_left_out": 13,
+    "checks_not_inspected": 1,
+    "external_capabilities_without_check": 10,
+    "internal_capabilities_not_reached": 0,
+    "unresolved_exports": 2,
+    "carry_candidates": 0
+  },
+  "usage": {
+    "total_tokens": 23827162,
+    "by_role": {
+      "controller": {
+        "calls": 33,
+        "seconds": 621.6297000000001,
+        "input_tokens": 1692856,
+        "cached_input_tokens": 599936,
+        "output_tokens": 12342,
+        "total_tokens": 1705198,
+        "missing_usage": 0,
+        "model_calls": 33
+      },
+      "fact_writer": {
+        "calls": 17,
+        "seconds": 604.8017,
+        "input_tokens": 1387492,
+        "cached_input_tokens": 994944,
+        "output_tokens": 17138,
+        "total_tokens": 1404630,
+        "missing_usage": 0,
+        "model_calls": 17
+      },
+      "fact_reviewer": {
+        "calls": 17,
+        "seconds": 419.4934,
+        "input_tokens": 1309839,
+        "cached_input_tokens": 855168,
+        "output_tokens": 7615,
+        "total_tokens": 1317454,
+        "missing_usage": 0,
+        "model_calls": 17
+      },
+      "test_designer": {
+        "calls": 21,
+        "seconds": 1704.0717000000002,
+        "input_tokens": 2447799,
+        "cached_input_tokens": 1910784,
+        "output_tokens": 63910,
+        "total_tokens": 2511709,
+        "missing_usage": 0,
+        "model_calls": 21
+      },
+      "test_reviewer": {
+        "calls": 2,
+        "seconds": 101.60409999999999,
+        "input_tokens": 596912,
+        "cached_input_tokens": 501376,
+        "output_tokens": 2181,
+        "total_tokens": 599093,
+        "missing_usage": 0,
+        "model_calls": 2
+      },
+      "examiner": {
+        "calls": 1,
+        "seconds": 609.8997,
+        "input_tokens": 615529,
+        "cached_input_tokens": 570624,
+        "output_tokens": 22334,
+        "total_tokens": 637863,
+        "missing_usage": 0,
+        "model_calls": 1
+      },
+      "solver": {
+        "calls": 3,
+        "seconds": 628.8411,
+        "input_tokens": 758460,
+        "cached_input_tokens": 649728,
+        "output_tokens": 22861,
+        "total_tokens": 781321,
+        "missing_usage": 0,
+        "model_calls": 3
+      },
+      "judge": {
+        "calls": 3,
+        "seconds": 0.9364999999999999,
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "missing_usage": 0,
+        "model_calls": 0
+      },
+      "author": {
+        "calls": 16,
+        "seconds": 6225.349000000001,
+        "input_tokens": 14651081,
+        "cached_input_tokens": 13543424,
+        "output_tokens": 218813,
+        "total_tokens": 14869894,
+        "missing_usage": 1,
+        "model_calls": 16
+      }
+    },
+    "dollar_cost": null,
+    "reason": "运行回执不含实际账单金额；不把 token 数换算为未经核实的费用。",
+    "total": {
+      "calls": 113,
+      "model_calls": 110,
+      "input_tokens": 23459968,
+      "cached_input_tokens": 19625984,
+      "output_tokens": 367194,
+      "total_tokens": 23827162,
+      "seconds": 10916.626900000001,
+      "missing_usage": 1
+    },
+    "is_observed_subtotal": true,
+    "failed_runner_calls": 1,
+    "nonzero_commands": 45,
+    "session_counts": {
+      "controller": 33,
+      "fact_writer": 17,
+      "fact_reviewer": 17,
+      "test_designer": 21,
+      "test_reviewer": 2,
+      "examiner": 1,
+      "solver": 3,
+      "judge": 0,
+      "author": 16
+    },
+    "author_shared_evaluator_sessions": {}
+  },
+  "time": {
+    "job_started_at": "2026-11-14T04:55:16.067959+00:00",
+    "finished_at": "2026-11-14T12:03:14.990008+00:00",
+    "job_seconds": 25678.922049,
+    "failure_downtime_seconds": 14266.654776,
+    "failure_intervals": [
+      {
+        "from": "2026-11-14T07:59:29.915950+00:00",
+        "until": "2026-11-14T11:57:16.570726+00:00",
+        "reason": "runner_usage_quota"
+      }
+    ],
+    "paused_seconds": 0,
+    "user_paused_seconds": 0,
+    "active_wall_seconds": 11412.267273000001,
+    "total_wall_seconds": 25678.922049,
+    "method": "Job created_epoch to final completed event; subtract failed-to-resume-accepted interval only. No user pause.",
+    "preparation_started_at": "2026-11-14T04:47:32.981788+00:00",
+    "including_preparation_seconds": 26142.00822
+  },
+  "verification_status": "unverified",
+  "installation": "passed",
+  "acceptance_relaxations": [],
+  "baseline": {
+    "groups": 30,
+    "statuses": {
+      "passed": 25,
+      "failed": 3,
+      "timed_out": 2
+    },
+    "all_skipped_groups": 2
+  },
+  "task_effort": {
+    "binding": {},
+    "iterations": [],
+    "limitations": [
+      "Task effort measures these tasks under the recorded agent settings; it is not a universal measure of human cognitive burden.",
+      "Tokens count solver model inputs and outputs, including cached input. Missing usage is unavailable, never zero. Examiner and judge overhead is separate.",
+      "Empirical ranges describe repeated observations, not statistical confidence intervals. Failed or unrun tasks do not establish an improvement.",
+      "Task links identify assessed capabilities only; they do not change module behavior verification badges.",
+      "Task prompts, hidden inputs, judging rubrics, source excerpts, raw traces and local paths are omitted from this public report."
+    ],
+    "operation": "task_effort_evaluation",
+    "overhead": {
+      "examiner_tokens": null,
+      "judge_tokens": null,
+      "observed_total_tokens": null,
+      "role_usage_complete": {
+        "examiner": false,
+        "judge": false,
+        "solver": false
+      },
+      "solver_tokens": null,
+      "total_tokens": null,
+      "usage_complete": false
+    },
+    "policy": {
+      "comparison": "empirical_range",
+      "strict_all_tasks": true
+    },
+    "resources": {
+      "cleanup_pending": false,
+      "cleanup_pending_runs": 0,
+      "completed_runs": 0
+    },
+    "schema_version": 1,
+    "status": "unverified",
+    "stop_reason": "behavior_acceptance_pending",
+    "task_types": [
+      "understand",
+      "diagnose",
+      "modify",
+      "execute"
+    ],
+    "tasks": []
+  },
+  "task_preparation": {
+    "configured_types": [
+      "modify"
+    ],
+    "examiner_calls": 1,
+    "original_development_solver_calls": 3,
+    "observed_tokens": 1419184,
+    "candidate_evaluation_runs": 0,
+    "note": "Prepared baseline receipts are separate from the unverified public assessment placeholder."
+  },
+  "source_reference": {
+    "author_calls": 12,
+    "capabilities": [
+      "artifacts",
+      "checkpoints",
+      "distribution",
+      "export",
+      "mlx-vision",
+      "model-core",
+      "model-inference",
+      "native-runtime",
+      "playground",
+      "speech-training",
+      "speech-ui",
+      "text-agents",
+      "tokenization",
+      "vision"
+    ],
+    "files": 25
+  },
+  "owner_diagnostics": 1,
+  "final_candidate": "candidate-13",
+  "result_summary": "Delivered with gaps (current full behavior comparison missing or failed, original retained checks not passed, original coverage incomplete, behavior obligations incomplete, task effort not passed); no full preservation claim is made.",
+  "delivery_source_audit": {
+    "candidate_commit": "2034130b555c1c5104b4407a46f54c15a11b9138",
+    "export_commit": "015be7c5f7ccebe268ac91d056e084ce23707f21",
+    "counted_files_compared": 65,
+    "mismatches": []
+  },
+  "verification": {
+    "status": "unverified",
+    "tests": {
+      "adapted": 0,
+      "contract": 14,
+      "count_unit": "check_groups",
+      "failed": 0,
+      "fixed_baseline_failure": 1,
+      "needs_adaptation": 0,
+      "not_run": 0,
+      "original_total": 16,
+      "passed": 25,
+      "retained": 30,
+      "retired": 0
+    },
+    "obligation_summary": {
+      "complete": false,
+      "failed": 0,
+      "partial": 7,
+      "retained": 27,
+      "retired": 0,
+      "total": 27,
+      "unknown": 3,
+      "verified": 17
+    },
+    "comparison_status_counts": {
+      "passed": 25,
+      "preexisting_failure": 4,
+      "fixed_baseline_failure": 1
+    },
+    "baseline_binding_reused_after_resume": true,
+    "candidate_commit": "2034130b555c1c5104b4407a46f54c15a11b9138",
+    "capabilities": [
+      {
+        "capability": "cactus",
+        "status": "partial"
+      },
+      {
+        "capability": "text-agents",
+        "status": "verified"
+      },
+      {
+        "capability": "tools",
+        "status": "unknown"
+      },
+      {
+        "capability": "grounding",
+        "status": "unknown"
+      },
+      {
+        "capability": "native-runtime",
+        "status": "verified"
+      },
+      {
+        "capability": "artifacts",
+        "status": "verified"
+      },
+      {
+        "capability": "speech",
+        "status": "verified"
+      },
+      {
+        "capability": "vision",
+        "status": "verified"
+      },
+      {
+        "capability": "environments",
+        "status": "unknown"
+      },
+      {
+        "capability": "hosted-platform",
+        "status": "verified"
+      },
+      {
+        "capability": "cli",
+        "status": "verified"
+      },
+      {
+        "capability": "speech-ui",
+        "status": "verified"
+      },
+      {
+        "capability": "playground",
+        "status": "verified"
+      },
+      {
+        "capability": "model-config",
+        "status": "verified"
+      },
+      {
+        "capability": "model-core",
+        "status": "partial"
+      },
+      {
+        "capability": "tokenization",
+        "status": "verified"
+      },
+      {
+        "capability": "checkpoints",
+        "status": "verified"
+      },
+      {
+        "capability": "quantization",
+        "status": "partial"
+      },
+      {
+        "capability": "export",
+        "status": "verified"
+      },
+      {
+        "capability": "training",
+        "status": "verified"
+      },
+      {
+        "capability": "speech-training",
+        "status": "verified"
+      },
+      {
+        "capability": "model-inference",
+        "status": "verified"
+      },
+      {
+        "capability": "mlx-inference",
+        "status": "partial"
+      },
+      {
+        "capability": "mlx-models",
+        "status": "partial"
+      },
+      {
+        "capability": "mlx-kernels",
+        "status": "partial"
+      },
+      {
+        "capability": "mlx-vision",
+        "status": "partial"
+      },
+      {
+        "capability": "distribution",
+        "status": "verified"
+      }
+    ]
+  },
+  "candidate_history": [
+    {
+      "attempt": 1,
+      "status": "regressed",
+      "tests": {
+        "adapted": 0,
+        "contract": 14,
+        "count_unit": "check_groups",
+        "failed": 10,
+        "fixed_baseline_failure": 1,
+        "needs_adaptation": 0,
+        "not_run": 0,
+        "original_total": 16,
+        "passed": 15,
+        "retained": 30,
+        "retired": 0
+      },
+      "tokens": 59661
+    },
+    {
+      "attempt": 2,
+      "status": "regressed",
+      "tests": {
+        "adapted": 0,
+        "contract": 14,
+        "count_unit": "check_groups",
+        "failed": 9,
+        "fixed_baseline_failure": 1,
+        "needs_adaptation": 0,
+        "not_run": 0,
+        "original_total": 16,
+        "passed": 16,
+        "retained": 30,
+        "retired": 0
+      },
+      "tokens": 60980
+    },
+    {
+      "attempt": 3,
+      "status": "regressed",
+      "tests": {
+        "adapted": 0,
+        "contract": 14,
+        "count_unit": "check_groups",
+        "failed": 8,
+        "fixed_baseline_failure": 1,
+        "needs_adaptation": 0,
+        "not_run": 0,
+        "original_total": 16,
+        "passed": 17,
+        "retained": 30,
+        "retired": 0
+      },
+      "tokens": 62686
+    },
+    {
+      "attempt": 4,
+      "status": "regressed",
+      "tests": {
+        "adapted": 0,
+        "contract": 14,
+        "count_unit": "check_groups",
+        "failed": 7,
+        "fixed_baseline_failure": 1,
+        "needs_adaptation": 0,
+        "not_run": 0,
+        "original_total": 16,
+        "passed": 18,
+        "retained": 30,
+        "retired": 0
+      },
+      "tokens": 62691
+    },
+    {
+      "attempt": 5,
+      "status": "regressed",
+      "tests": {
+        "adapted": 0,
+        "contract": 14,
+        "count_unit": "check_groups",
+        "failed": 6,
+        "fixed_baseline_failure": 1,
+        "needs_adaptation": 0,
+        "not_run": 0,
+        "original_total": 16,
+        "passed": 19,
+        "retained": 30,
+        "retired": 0
+      },
+      "tokens": 62944
+    },
+    {
+      "attempt": 6,
+      "status": "regressed",
+      "tests": {
+        "adapted": 0,
+        "contract": 14,
+        "count_unit": "check_groups",
+        "failed": 5,
+        "fixed_baseline_failure": 1,
+        "needs_adaptation": 0,
+        "not_run": 0,
+        "original_total": 16,
+        "passed": 20,
+        "retained": 30,
+        "retired": 0
+      },
+      "tokens": 63095
+    },
+    {
+      "attempt": 7,
+      "status": "regressed",
+      "tests": {
+        "adapted": 0,
+        "contract": 14,
+        "count_unit": "check_groups",
+        "failed": 4,
+        "fixed_baseline_failure": 1,
+        "needs_adaptation": 0,
+        "not_run": 0,
+        "original_total": 16,
+        "passed": 21,
+        "retained": 30,
+        "retired": 0
+      },
+      "tokens": 63349
+    },
+    {
+      "attempt": 8,
+      "status": "regressed",
+      "tests": {
+        "adapted": 0,
+        "contract": 14,
+        "count_unit": "check_groups",
+        "failed": 4,
+        "fixed_baseline_failure": 1,
+        "needs_adaptation": 0,
+        "not_run": 0,
+        "original_total": 16,
+        "passed": 21,
+        "retained": 30,
+        "retired": 0
+      },
+      "tokens": 63355
+    },
+    {
+      "attempt": 9,
+      "status": "regressed",
+      "tests": {
+        "adapted": 0,
+        "contract": 14,
+        "count_unit": "check_groups",
+        "failed": 3,
+        "fixed_baseline_failure": 1,
+        "needs_adaptation": 0,
+        "not_run": 0,
+        "original_total": 16,
+        "passed": 22,
+        "retained": 30,
+        "retired": 0
+      },
+      "tokens": 63182
+    },
+    {
+      "attempt": 10,
+      "status": "regressed",
+      "tests": {
+        "adapted": 0,
+        "contract": 14,
+        "count_unit": "check_groups",
+        "failed": 2,
+        "fixed_baseline_failure": 1,
+        "needs_adaptation": 0,
+        "not_run": 0,
+        "original_total": 16,
+        "passed": 23,
+        "retained": 30,
+        "retired": 0
+      },
+      "tokens": 63295
+    },
+    {
+      "attempt": 11,
+      "status": "regressed",
+      "tests": {
+        "adapted": 0,
+        "contract": 14,
+        "count_unit": "check_groups",
+        "failed": 1,
+        "fixed_baseline_failure": 1,
+        "needs_adaptation": 0,
+        "not_run": 0,
+        "original_total": 16,
+        "passed": 24,
+        "retained": 30,
+        "retired": 0
+      },
+      "tokens": 63408
+    },
+    {
+      "attempt": 13,
+      "status": "unverified",
+      "tests": {
+        "adapted": 0,
+        "contract": 14,
+        "count_unit": "check_groups",
+        "failed": 0,
+        "fixed_baseline_failure": 1,
+        "needs_adaptation": 0,
+        "not_run": 0,
+        "original_total": 16,
+        "passed": 25,
+        "retained": 30,
+        "retired": 0
+      },
+      "tokens": 63429
+    }
+  ]
+}

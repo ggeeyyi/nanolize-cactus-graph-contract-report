@@ -1,0 +1,38 @@
+commit be5119779d616e1e318f7c6e684905956bc449b6
+
+fix: classify Metal kernels as measured production source
+
+diff --git a/src/nanolize/repository.py b/src/nanolize/repository.py
+index c73b29b..2e6034a 100644
+--- a/src/nanolize/repository.py
++++ b/src/nanolize/repository.py
+@@ -43,6 +43,7 @@ SKIP_DIRS = {
+ # them; a snapshot names those holding files rather than dropping them silently.
+ UNMEASURED_DIRS = frozenset({"build", "dist", "env", "target", "vendor", ".next"})
+ SOURCE_SUFFIXES = {
++    ".metal",
+     ".cu",
+     ".cuh",
+     ".cc",
+diff --git a/tests/test_code_size.py b/tests/test_code_size.py
+index 08754a3..aacd0c5 100644
+--- a/tests/test_code_size.py
++++ b/tests/test_code_size.py
+@@ -29,6 +29,17 @@ class CodeSizeTests(unittest.TestCase):
+     def plan(self, **kwargs):
+         return plan_capabilities(self.root, self.manifest, **kwargs)
+ 
++    def test_metal_kernel_is_mapped_and_measured_as_production_source(self):
++        source = "kernel void add(device float *x) { x[0] += 1; }\n"
++        (self.root / "add.metal").write_text(source)
++        self.manifest["capabilities"][0]["paths"].append("add.metal")
++        plan = self.plan()
++        measured = code_size.measure_code_size(self.root)
++        self.assertIn("add.metal", plan["inventory"])
++        self.assertEqual(measured["inventory"]["add.metal"]["category"], "source")
++        self.assertEqual(measured["inventory"]["add.metal"]["tokens"],
++                         len(code_size._tokenizer().encode_ordinary(source)))
++
+     def test_raw_source_configuration_and_unknown_text_use_same_encoder(self):
+         (self.root / "labels.txt").write_bytes(b"first\r\nsecond\r\n")
+         (self.root / "Makefile").write_text("all:\n\tpython core.py\n")

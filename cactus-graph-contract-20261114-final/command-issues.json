@@ -1,0 +1,452 @@
+[
+  {
+    "id": 1,
+    "role": "fact_reviewer",
+    "step": "文件路径探测",
+    "exit_code": 2,
+    "cause": "猜测的路径不存在",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 4 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 2,
+    "role": "fact_reviewer",
+    "step": "文件路径探测",
+    "exit_code": 2,
+    "cause": "猜测的路径不存在；登录 shell 的系统 profile 写入也被沙箱阻止",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 2 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 3,
+    "role": "fact_reviewer",
+    "step": "文件路径探测",
+    "exit_code": 2,
+    "cause": "猜测的路径不存在",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 2 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 4,
+    "role": "fact_reviewer",
+    "step": "文件路径探测",
+    "exit_code": 2,
+    "cause": "猜测的路径不存在；登录 shell 的系统 profile 写入也被沙箱阻止",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 4 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 5,
+    "role": "fact_reviewer",
+    "step": "文件路径探测",
+    "exit_code": 2,
+    "cause": "猜测的路径不存在；登录 shell 的系统 profile 写入也被沙箱阻止",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 2 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 6,
+    "role": "test_designer",
+    "step": "开发阶段检查",
+    "exit_code": 1,
+    "cause": "实际行为与提案或自检预期不一致，后续继续设计/实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 1 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 7,
+    "role": "test_designer",
+    "step": "文件路径探测",
+    "exit_code": 2,
+    "cause": "猜测的路径不存在",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 2 条成功命令",
+    "changed_files_count": 1
+  },
+  {
+    "id": 8,
+    "role": "test_designer",
+    "step": "模块导入",
+    "exit_code": 1,
+    "cause": "运行环境缺少依赖或草稿尚未提供对应模块",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 2 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 9,
+    "role": "test_designer",
+    "step": "搜索/命令链探测",
+    "exit_code": 2,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败；登录 shell 的系统 profile 写入也被沙箱阻止",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 2 条成功命令",
+    "changed_files_count": 1
+  },
+  {
+    "id": 10,
+    "role": "test_designer",
+    "step": "开发阶段检查",
+    "exit_code": 1,
+    "cause": "实际行为与提案或自检预期不一致，后续继续设计/实现；登录 shell 的系统 profile 写入也被沙箱阻止",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 1 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 11,
+    "role": "test_designer",
+    "step": "开发阶段检查",
+    "exit_code": 1,
+    "cause": "实际行为与提案或自检预期不一致，后续继续设计/实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 1 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 12,
+    "role": "test_designer",
+    "step": "文件路径探测",
+    "exit_code": 1,
+    "cause": "猜测的路径不存在",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "没有后续成功命令事件；会话/正式结果另计",
+    "changed_files_count": 0
+  },
+  {
+    "id": 13,
+    "role": "examiner",
+    "step": "文件路径探测",
+    "exit_code": 1,
+    "cause": "猜测的路径不存在",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 14 条成功命令",
+    "changed_files_count": 4
+  },
+  {
+    "id": 14,
+    "role": "examiner",
+    "step": "文件路径探测",
+    "exit_code": 2,
+    "cause": "猜测的路径不存在",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 8 条成功命令",
+    "changed_files_count": 4
+  },
+  {
+    "id": 15,
+    "role": "solver",
+    "step": "Git 状态探测",
+    "exit_code": 128,
+    "cause": "任务评估工作区不是 Git 仓库",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 6 条成功命令",
+    "changed_files_count": 2
+  },
+  {
+    "id": 16,
+    "role": "solver",
+    "step": "开发阶段检查",
+    "exit_code": 1,
+    "cause": "实际行为与提案或自检预期不一致，后续继续设计/实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 2 条成功命令",
+    "changed_files_count": 2
+  },
+  {
+    "id": 17,
+    "role": "solver",
+    "step": "Git 状态探测",
+    "exit_code": 128,
+    "cause": "任务评估工作区不是 Git 仓库",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 9 条成功命令",
+    "changed_files_count": 2
+  },
+  {
+    "id": 18,
+    "role": "solver",
+    "step": "开发阶段检查",
+    "exit_code": 1,
+    "cause": "实际行为与提案或自检预期不一致，后续继续设计/实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 3 条成功命令",
+    "changed_files_count": 1
+  },
+  {
+    "id": 19,
+    "role": "solver",
+    "step": "Git 状态探测",
+    "exit_code": 128,
+    "cause": "任务评估工作区不是 Git 仓库",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 10 条成功命令",
+    "changed_files_count": 2
+  },
+  {
+    "id": 20,
+    "role": "solver",
+    "step": "搜索/命令链探测",
+    "exit_code": 2,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 7 条成功命令",
+    "changed_files_count": 2
+  },
+  {
+    "id": 21,
+    "role": "solver",
+    "step": "命令链非零返回",
+    "exit_code": 1,
+    "cause": "需结合本地完整输出解释；不能据退出码推断产品缺陷；登录 shell 的系统 profile 写入也被沙箱阻止",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 4 条成功命令",
+    "changed_files_count": 2
+  },
+  {
+    "id": 22,
+    "role": "solver",
+    "step": "开发阶段检查",
+    "exit_code": 1,
+    "cause": "实际行为与提案或自检预期不一致，后续继续设计/实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 3 条成功命令",
+    "changed_files_count": 1
+  },
+  {
+    "id": 23,
+    "role": "solver",
+    "step": "差异比较",
+    "exit_code": 1,
+    "cause": "diff 发现修改时返回 1，属于正常差异证据",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 2 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 24,
+    "role": "author",
+    "step": "作者开发自检",
+    "exit_code": 1,
+    "cause": "草稿阶段接口或导入尚未全部实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 6 条成功命令",
+    "changed_files_count": 5
+  },
+  {
+    "id": 25,
+    "role": "author",
+    "step": "作者开发自检",
+    "exit_code": 1,
+    "cause": "草稿阶段接口或导入尚未全部实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 2 条成功命令",
+    "changed_files_count": 1
+  },
+  {
+    "id": 26,
+    "role": "author",
+    "step": "作者开发自检",
+    "exit_code": 1,
+    "cause": "草稿阶段接口或导入尚未全部实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 4 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 27,
+    "role": "author",
+    "step": "作者开发自检",
+    "exit_code": 1,
+    "cause": "草稿阶段接口或导入尚未全部实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 1 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 28,
+    "role": "author",
+    "step": "搜索/命令链探测",
+    "exit_code": 1,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 18 条成功命令",
+    "changed_files_count": 21
+  },
+  {
+    "id": 29,
+    "role": "author",
+    "step": "命令链非零返回",
+    "exit_code": 1,
+    "cause": "需结合本地完整输出解释；不能据退出码推断产品缺陷",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 8 条成功命令",
+    "changed_files_count": 21
+  },
+  {
+    "id": 30,
+    "role": "author",
+    "step": "作者开发自检",
+    "exit_code": 1,
+    "cause": "草稿阶段接口或导入尚未全部实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 4 条成功命令",
+    "changed_files_count": 9
+  },
+  {
+    "id": 31,
+    "role": "author",
+    "step": "作者开发自检",
+    "exit_code": 1,
+    "cause": "草稿阶段接口或导入尚未全部实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 1 条成功命令",
+    "changed_files_count": 3
+  },
+  {
+    "id": 32,
+    "role": "author",
+    "step": "作者开发自检",
+    "exit_code": 1,
+    "cause": "草稿阶段接口或导入尚未全部实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 1 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 33,
+    "role": "author",
+    "step": "搜索/命令链探测",
+    "exit_code": 1,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 18 条成功命令",
+    "changed_files_count": 16
+  },
+  {
+    "id": 34,
+    "role": "author",
+    "step": "搜索/命令链探测",
+    "exit_code": 1,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 17 条成功命令",
+    "changed_files_count": 5
+  },
+  {
+    "id": 35,
+    "role": "author",
+    "step": "观察脚本",
+    "exit_code": 1,
+    "cause": "脚本将列表用于需要可哈希值的操作",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 14 条成功命令",
+    "changed_files_count": 5
+  },
+  {
+    "id": 36,
+    "role": "author",
+    "step": "搜索/命令链探测",
+    "exit_code": 1,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 12 条成功命令",
+    "changed_files_count": 1
+  },
+  {
+    "id": 37,
+    "role": "author",
+    "step": "搜索/命令链探测",
+    "exit_code": 1,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 4 条成功命令",
+    "changed_files_count": 1
+  },
+  {
+    "id": 38,
+    "role": "author",
+    "step": "搜索/命令链探测",
+    "exit_code": 1,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 8 条成功命令",
+    "changed_files_count": 1
+  },
+  {
+    "id": 39,
+    "role": "author",
+    "step": "作者开发自检",
+    "exit_code": 1,
+    "cause": "草稿阶段接口或导入尚未全部实现",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 3 条成功命令",
+    "changed_files_count": 1
+  },
+  {
+    "id": 40,
+    "role": "author",
+    "step": "可执行文件探测",
+    "exit_code": 127,
+    "cause": "命令不在该运行器 PATH 中",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 1 条成功命令",
+    "changed_files_count": 0
+  },
+  {
+    "id": 41,
+    "role": "author",
+    "step": "搜索/命令链探测",
+    "exit_code": 1,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 15 条成功命令",
+    "changed_files_count": 2
+  },
+  {
+    "id": 42,
+    "role": "author",
+    "step": "搜索/命令链探测",
+    "exit_code": 1,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "没有后续成功命令事件；会话/正式结果另计",
+    "changed_files_count": 0
+  },
+  {
+    "id": 43,
+    "role": "author",
+    "step": "搜索/命令链探测",
+    "exit_code": 1,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 13 条成功命令",
+    "changed_files_count": 4
+  },
+  {
+    "id": 44,
+    "role": "author",
+    "step": "搜索/命令链探测",
+    "exit_code": 1,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 9 条成功命令",
+    "changed_files_count": 2
+  },
+  {
+    "id": 45,
+    "role": "author",
+    "step": "搜索/命令链探测",
+    "exit_code": 1,
+    "cause": "搜索无匹配或命令链后续步骤未运行；不自动构成行为失败",
+    "action": "由原独立会话继续处理；编排者未改源码、断言或冻结规则",
+    "result": "同一会话随后有 7 条成功命令",
+    "changed_files_count": 0
+  }
+]
